@@ -1,0 +1,10 @@
+{
+    "window.title": "React",
+    "workbench.colorCustomizations": {
+        "activityBar.background": "#0B3330",
+        "titleBar.activeBackground": "#61dafb",
+        "titleBar.activeForeground": "#0a5063",
+        "titleBar.inactiveBackground": "#51caeb",
+        "titleBar.inactiveForeground": "#0a5063"
+    }
+}
