@@ -16,7 +16,7 @@ function Contacts({ onChange }) {
         { name: 'SPAM', iconText: 'SP', iconColor: [0x00, 0x93, 0x78]}
     ]);
     const [currentContact, setCurrentContact] = useState(() => {
-        return users.find((username) => username !== session.username);
+        return users.find((user) => (user.name !== session.username));
     });
 
     useEffect(() => {
@@ -41,8 +41,8 @@ function Contacts({ onChange }) {
                     {users.map((user) => (
                         <button
                             key={user.name}
-                            className={(user.name === currentContact ? 'contact active' : 'contact')}
-                            onClick={() => setCurrentContact(user.name)}
+                            className={(user.name === currentContact.name ? 'contact active' : 'contact')}
+                            onClick={() => setCurrentContact(user)}
                         >
                             <div className="contact-icon">{user.name.substr(0, 2)}</div>
                             <p className="contact-name">{user.name}</p>

@@ -21,7 +21,7 @@ function MainPage() {
 
     const socket = useRef();
 
-    const [currentContact, setCurrentContact] = useState('');
+    const [currentContact, setCurrentContact] = useState(null);
     const messageListElement = useRef();
     const [hoveredMessage, setHoveredMessage] = useState(null);
     const [shouldScrollDown, setShouldScrollDown] = useState(false);
@@ -78,18 +78,17 @@ function MainPage() {
 
         socket.current.on('messageReceived', (ev) => {
             console.log(ev);
-            //alert('odebralem wiadomosc ' + ev.content + ' od ' + ev.sender);
 
             if (ev.sender === currentContact || ev.sender === session.username) {
                 addMessage(ev.content, new Date(ev.date), ev.sender);
             }
         });
-
-        loadMessages();
     }, []);
 
     useEffect(() => {
-        loadMessages();
+        if (currentContact) {
+            loadMessages();
+        }
     }, [currentContact]);
 
     useEffect(() => {
@@ -100,14 +99,14 @@ function MainPage() {
     }, [shouldScrollDown]);
 
     function loadMessages() {
-        api.getMessages({ recipient: currentContact })
+        api.getMessages({ recipient: currentContact.name })
         .then((res) => addMessages(res.data));
     }
 
     function submitMessage(ev) {
         ev.preventDefault();
 
-        api.sendMessage({ recipient: currentContact, content: messageInputText });
+        api.sendMessage({ recipient: currentContact.name, content: messageInputText });
         setMessageInputText('');
     }
 
@@ -144,8 +143,6 @@ function MainPage() {
         let lastGroup = { ...groups.current[groups.current.length - 1] };
 
         if (!lastGroup || lastGroup.author !== sender) {
-            //console.log('add a new group');
-
             let newGroup = {
                 author: sender,
                 messages: [newMessage]
@@ -153,8 +150,6 @@ function MainPage() {
             groups.current = [...groups.current, newGroup];
         }
         else {
-            //console.log('add to the last group');
-
             lastGroup.messages.push(newMessage);
             let newGroups = [...groups.current];
             newGroups[newGroups.length - 1] = lastGroup;
