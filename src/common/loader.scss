@@ -1,0 +1,25 @@
+@keyframes loading {
+    0% {
+        transform: rotate(0);
+    }
+    50% {
+        transform: rotate(360deg);
+        border-top-color: #10a040;
+    }
+    100% {
+        transform: rotate(720deg);
+    }
+}
+
+@keyframes loader-fade-out {
+    from { opacity: 0; }
+}
+
+.loader {
+    height: 32px;
+    width: 32px;
+    border-radius: 32px;
+    border: 3px solid rgba(#ffffff, 0.075);
+    border-top-color: #4080ff;
+    animation: loading 1.6s linear infinite, loader-fade-out 0.6s;
+}

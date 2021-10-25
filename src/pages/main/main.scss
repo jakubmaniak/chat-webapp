@@ -94,16 +94,18 @@ section.right {
 }
 
 @keyframes show-message-date {
-    from { transform: translateX(-8px); opacity: 0.8; }
-    to { transform: translateX(0); opacity: 1.0; }
+    from { transform: translateX(-8px) translateY(-6px); opacity: 0.8; }
+    to { transform: translateX(0) translateY(-6px); opacity: 1.0; }
 }
 
 .message-date {
     margin-left: 12px;
+    padding-top: 6px;
     color: #707074;
     font-size: 13px;
     font-weight: 500;
     animation: show-message-date 0.1s;
+    transform: translateY(-6px);
 }
 
 

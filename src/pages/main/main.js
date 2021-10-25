@@ -5,14 +5,15 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import 'dayjs/locale/pl';
 
-
 import api from '../../api';
 import { SessionContext } from '../../contexts/session-context';
 import Contacts from './contacts';
 
 import './main.scss';
+import Loader from '../../common/loader';
 
 dayjs.extend(relativeTime);
+dayjs.locale('pl');
 
 
 function MainPage() {
@@ -21,6 +22,7 @@ function MainPage() {
 
     const socket = useRef();
 
+    const [loading, setLoading] = useState(false);
     const [currentContact, setCurrentContact] = useState(null);
     const messageListElement = useRef();
     const [hoveredMessage, setHoveredMessage] = useState(null);
@@ -99,8 +101,13 @@ function MainPage() {
     }, [shouldScrollDown]);
 
     function loadMessages() {
+        setLoading(true);
+
         api.getMessages({ recipient: currentContact.name })
-        .then((res) => addMessages(res.data));
+        .then((res) => {
+            setLoading(false);
+            addMessages(res.data);
+        });
     }
 
     function submitMessage(ev) {
@@ -180,11 +187,54 @@ function MainPage() {
                     onMouseLeave={() => setHoveredMessage(null)}
                 >{message.content}</div>
                 {hoveredMessage === message
-                    ? <p className="message-date">{message.date.locale('pl').fromNow()}</p>
+                    ? <p className="message-date">{message.date.fromNow()}</p>
                     : null
                 }
             </div>
         );
+    }
+
+    function renderMessageGroups() {
+        if (loading) {
+            return <div style={{
+                width: '100%',
+                height: '100px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+            }}>
+                <Loader />
+            </div>;
+        }
+
+        if (groups.current.length === 0) {
+            return <div style={{
+                width: '100%',
+                height: '100px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                userSelect: 'none'
+            }}>
+                <p style={{
+                    color: '#707074',
+                    fontWeight: '500',
+                    fontSize: '14px'
+                    
+                }}>Brak wiadomości</p>
+                <span style={{marginLeft: '4px', fontSize: '24px'}}>😢</span>
+            </div>;
+        }
+
+        return groups.current.map((group, i) => (
+            <div key={i} className="message-group">
+                <div className="message-group-author">
+                    <div className="message-group-author-avatar"></div>
+                    <p className="message-group-author-username">{group.author}</p>
+                </div>
+                {group.messages.map((message, i) => renderMessage(i, message, group.author))}
+            </div>
+        ));
     }
 
     return (
@@ -195,15 +245,7 @@ function MainPage() {
             </section>
             <section className="right">
                 <div className="message-list" ref={messageListElement}>
-                    {groups.current.map((group, i) => (
-                        <div key={i} className="message-group">
-                            <div className="message-group-author">
-                                <div className="message-group-author-avatar"></div>
-                                <p className="message-group-author-username">{group.author}</p>
-                            </div>
-                            {group.messages.map((message, i) => renderMessage(i, message, group.author))}
-                        </div>
-                    ))}
+                    {renderMessageGroups()}
                 </div>
                 <form className="message-box" onSubmit={submitMessage}>
                     <input
