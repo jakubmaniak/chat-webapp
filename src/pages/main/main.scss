@@ -12,29 +12,6 @@ section.left {
     color: #e0e0e0;
 }
 
-.contact-list {
-    margin-top: 16px;
-    display: flex;
-    flex-direction: column;
-}
-
-.contact {
-    height: 32px;
-    padding: 0 12px;
-    margin-bottom: 12px;
-    background-color: transparent;
-    border-radius: 10px;
-    color: #cccccc;
-    font-size: 14px;
-    font-weight: 600;
-    text-align: left;
-    cursor: pointer;
-
-    &.active {
-        background-color: #1b1b20;
-        color: #ffffff;
-    }
-}
 
 
 section.right {
@@ -83,13 +60,21 @@ section.right {
     line-height: 32px;
 }
 
+.message-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-left: 30px;
+}
+
 @keyframes show-message {
     from { transform: translateY(8px); opacity: 0.8; }
     to { transform: translateY(0); opacity: 1.0; }
 }
 
 .message {
-    margin-left: 42px;
+    max-width: 50vw;
+    margin-left: 12px;
     margin-bottom: 6px;
     padding: 8px 14px;
     background-color: #2b2b30;
@@ -106,6 +91,19 @@ section.right {
 .message.owned {
     background-color: #d8d8d8;
     color: #404044;
+}
+
+@keyframes show-message-date {
+    from { transform: translateX(-8px); opacity: 0.8; }
+    to { transform: translateX(0); opacity: 1.0; }
+}
+
+.message-date {
+    margin-left: 12px;
+    color: #707074;
+    font-size: 13px;
+    font-weight: 500;
+    animation: show-message-date 0.1s;
 }
 
 

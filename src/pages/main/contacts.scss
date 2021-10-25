@@ -1,0 +1,67 @@
+.contact-list {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+.contact-section + .contact-section {
+    margin-top: 40px;
+}
+
+.contact-section-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.contact-section-title {
+    flex: 1;
+    color: #585858;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.contact-section-button {
+    color: #585858;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.contact-section-entries {
+    display: flex;
+    flex-direction: column;
+}
+
+button.contact {
+    display: flex;
+    height: 32px;
+    margin-bottom: 12px;
+    background-color: transparent;
+    border-radius: 10px;
+    color: #cccccc;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+
+    &.active {
+        background-color: #1b1b20;
+        color: #ffffff;
+    }
+}
+
+.contact-name {
+    margin-left: 12px;
+    line-height: 32px;
+}
+
+.contact-icon {
+    height: 32px;
+    width: 32px;
+    border-radius: 10px;
+    background-color: #1b1b20;
+    line-height: 32px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+}

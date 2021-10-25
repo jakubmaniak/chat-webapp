@@ -1,12 +1,18 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import socketio from 'socket.io-client';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import 'dayjs/locale/pl';
+
 
 import api from '../../api';
 import { SessionContext } from '../../contexts/session-context';
 import Contacts from './contacts';
 
 import './main.scss';
+
+dayjs.extend(relativeTime);
 
 
 function MainPage() {
@@ -17,21 +23,22 @@ function MainPage() {
 
     const [currentContact, setCurrentContact] = useState('');
     const messageListElement = useRef();
+    const [hoveredMessage, setHoveredMessage] = useState(null);
     const [shouldScrollDown, setShouldScrollDown] = useState(false);
     const groups = useRef([
         {
             author: 'admin',
             messages: [
-                { content: 'hej', date: new Date('2020-02-21 10:23:22'), animated: false },
-                { content: 'co tam?', date: new Date('2020-02-21 10:23:29'), animated: false }
+                { content: 'hej', date: dayjs(new Date('2020-02-21 10:23:22')), animated: false },
+                { content: 'co tam?', date: dayjs(new Date('2020-02-21 10:23:29')), animated: false }
             ]
         },
         {
             author: 'snowanka',
             messages: [
-                { content: 'nic tam', date: new Date('2020-02-21 10:25:59'), animated: false },
-                { content: 'co tam?', date: new Date('2020-02-21 10:26:15'), animated: false },
-                { content: 'nic tam', date: new Date('2020-02-21 10:26:21'), animated: false },
+                { content: 'nic tam', date: dayjs(new Date('2020-02-21 10:25:59')), animated: false },
+                { content: 'co tam?', date: dayjs(new Date('2020-02-21 10:26:15')), animated: false },
+                { content: 'nic tam', date: dayjs(new Date('2020-02-21 10:26:21')), animated: false },
             ]
         }
     ]);
@@ -111,7 +118,7 @@ function MainPage() {
         for (let message of messages) {
             let newMessage = {
                 content: message.content,
-                date: new Date(message.date),
+                date: dayjs(new Date(message.date)),
                 animated: false
             };
 
@@ -132,7 +139,7 @@ function MainPage() {
         setShouldScrollDown(true);
     }
 
-    function addMessage(content, date = new Date(), sender = session.username) {
+    function addMessage(content, date = dayjs(new Date()), sender = session.username) {
         let newMessage = { content, date, animated: true };
         let lastGroup = { ...groups.current[groups.current.length - 1] };
 
@@ -169,7 +176,20 @@ function MainPage() {
             className += ' animated';
         }
 
-        return <div key={key} className={className}>{message.content}</div>;
+        return (
+            <div className="message-row">
+                <div
+                    key={key}
+                    className={className}
+                    onMouseEnter={() => setHoveredMessage(message)}
+                    onMouseLeave={() => setHoveredMessage(null)}
+                >{message.content}</div>
+                {hoveredMessage === message
+                    ? <p className="message-date">{message.date.locale('pl').fromNow()}</p>
+                    : null
+                }
+            </div>
+        );
     }
 
     return (
