@@ -27,23 +27,7 @@ function MainPage() {
     const messageListElement = useRef();
     const [hoveredMessage, setHoveredMessage] = useState(null);
     const [shouldScrollDown, setShouldScrollDown] = useState(false);
-    const groups = useRef([
-        {
-            author: 'admin',
-            messages: [
-                { content: 'hej', date: dayjs(new Date('2020-02-21 10:23:22')), animated: false },
-                { content: 'co tam?', date: dayjs(new Date('2020-02-21 10:23:29')), animated: false }
-            ]
-        },
-        {
-            author: 'snowanka',
-            messages: [
-                { content: 'nic tam', date: dayjs(new Date('2020-02-21 10:25:59')), animated: false },
-                { content: 'co tam?', date: dayjs(new Date('2020-02-21 10:26:15')), animated: false },
-                { content: 'nic tam', date: dayjs(new Date('2020-02-21 10:26:21')), animated: false },
-            ]
-        }
-    ]);
+    const groups = useRef([]);
     const [messageInputText, setMessageInputText] = useState('');
 
     const [emojis] = useState({
@@ -82,7 +66,7 @@ function MainPage() {
             console.log(ev);
 
             if (ev.sender === currentContact || ev.sender === session.username) {
-                addMessage(ev.content, new Date(ev.date), ev.sender);
+                addMessage(ev.content, dayjs(ev.date), ev.sender);
             }
         });
     }, []);
@@ -124,7 +108,7 @@ function MainPage() {
         for (let message of messages) {
             let newMessage = {
                 content: message.content,
-                date: dayjs(new Date(message.date)),
+                date: dayjs(message.date),
                 animated: false
             };
 
@@ -145,7 +129,7 @@ function MainPage() {
         setShouldScrollDown(true);
     }
 
-    function addMessage(content, date = dayjs(new Date()), sender = session.username) {
+    function addMessage(content, date = dayjs(), sender = session.username) {
         let newMessage = { content, date, animated: true };
         let lastGroup = { ...groups.current[groups.current.length - 1] };
 
