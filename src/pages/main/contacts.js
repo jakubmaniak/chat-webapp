@@ -1,12 +1,15 @@
 import { useContext, useEffect, useState } from 'react';
 
 import { SessionContext } from '../../contexts/session-context';
+import { SocketContext } from '../../contexts/socket-context';
 
 import './contacts.scss';
 
 
 function Contacts({ onChange }) {
     const { session, setSession } = useContext(SessionContext);
+    const { socket, setSocket } = useContext(SocketContext);
+
     const [users, setUsers] = useState([
         { name: 'admin', status: 'online' },
         { name: 'snowanka', status: 'offline' }
@@ -18,6 +21,22 @@ function Contacts({ onChange }) {
     const [currentContact, setCurrentContact] = useState(() => {
         return users.find((user) => (user.name !== session.username));
     });
+
+    useEffect(() => {
+        if (socket.connection === null) {
+            return;
+        }
+
+        socket.connection.on('userStatusChanged', (ev) => {
+            setUsers((users) => {
+                let newUsers = [ ...users ];
+                const userIndex = newUsers.findIndex((user) => user.name === ev.username);
+                newUsers[userIndex] = { ...users[userIndex], status: ev.status };
+
+                return newUsers;
+            });
+        });
+    }, [socket.connection]);
 
     useEffect(() => {
         onChange?.(currentContact);

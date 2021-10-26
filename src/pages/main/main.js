@@ -1,16 +1,17 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useCookies } from 'react-cookie';
-import socketio from 'socket.io-client';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import 'dayjs/locale/pl';
 
 import api from '../../api';
 import { SessionContext } from '../../contexts/session-context';
+import { SocketContext } from '../../contexts/socket-context';
+import Loader from '../../common/loader';
 import Contacts from './contacts';
 
 import './main.scss';
-import Loader from '../../common/loader';
+
 
 dayjs.extend(relativeTime);
 dayjs.locale('pl');
@@ -18,11 +19,11 @@ dayjs.locale('pl');
 
 function MainPage() {
     const { session, setSession } = useContext(SessionContext);
+    const { socket, setSocket } = useContext(SocketContext);
     const [cookies, setCookies] = useCookies(['sid']);
 
-    const socket = useRef();
 
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [currentContact, setCurrentContact] = useState(null);
     const messageListElement = useRef();
     const [hoveredMessage, setHoveredMessage] = useState(null);
@@ -57,12 +58,11 @@ function MainPage() {
     });
 
     useEffect(() => {
-        socket.current = socketio({
-            query: { httpsid: cookies.sid }
-        });
-        socket.current.on('connect', () => console.log('connect'));
+        if (!socket.connected) {
+            socket.connect(cookies.sid);
+        }
 
-        socket.current.on('messageReceived', (ev) => {
+        socket.connection.on('messageReceived', (ev) => {
             console.log(ev);
 
             if (ev.sender === currentContact || ev.sender === session.username) {
