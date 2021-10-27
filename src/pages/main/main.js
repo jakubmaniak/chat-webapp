@@ -163,7 +163,7 @@ function MainPage() {
         }
 
         const messageContent = message.content
-            .split(/(https?:\/\/[^\s]+)/g)
+            .split(/((?:https?:\/\/|ftps?:\/\/|mailto:|magnet:)[^\s]+)/g)
             .map((segment, i) => (
                 (i % 2)
                 ? <a href={segment} rel="noopener noreferrer nofollow" target="_blank">{segment}</a>
