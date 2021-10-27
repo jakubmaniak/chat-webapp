@@ -162,6 +162,14 @@ function MainPage() {
             className += ' animated';
         }
 
+        const messageContent = message.content
+            .split(/(https?:\/\/[^\s]+)/g)
+            .map((segment, i) => (
+                (i % 2)
+                ? <a href={segment} rel="noopener noreferrer nofollow" target="_blank">{segment}</a>
+                : segment
+            ));
+
         return (
             <div className="message-row">
                 <div
@@ -169,7 +177,7 @@ function MainPage() {
                     className={className}
                     onMouseEnter={() => setHoveredMessage(message)}
                     onMouseLeave={() => setHoveredMessage(null)}
-                >{message.content}</div>
+                >{messageContent}</div>
                 {hoveredMessage === message
                     ? <p className="message-date">{message.date.fromNow()}</p>
                     : null
@@ -210,7 +218,7 @@ function MainPage() {
             </div>;
         }
 
-        return groups.current.map((group, i) => (
+        let results = groups.current.map((group, i) => (
             <div key={i} className="message-group">
                 <div className="message-group-author">
                     <div className="message-group-author-avatar"></div>
@@ -219,6 +227,7 @@ function MainPage() {
                 {group.messages.map((message, i) => renderMessage(i, message, group.author))}
             </div>
         ));
+        return results;
     }
 
     return (
@@ -235,7 +244,6 @@ function MainPage() {
                     <input
                         className="message-input"
                         value={messageInputText}
-                        onChange={(ev) => setMessageInputText(ev.target.value)}
                         placeholder="Wiadomość..."
                     />
                 </form>

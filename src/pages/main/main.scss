@@ -94,6 +94,11 @@ section.right {
     color: #404044;
 }
 
+.message > a {
+    color: #4080ff;
+    font-weight: 600;
+}
+
 @keyframes show-message-date {
     from { transform: translateX(-8px) translateY(-6px); opacity: 0.8; }
     to { transform: translateX(0) translateY(-6px); opacity: 1.0; }
