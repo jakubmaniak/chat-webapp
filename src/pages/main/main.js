@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import 'dayjs/locale/pl';
 
+import useListener from '../../hooks/use-listener';
 import api from '../../api';
 import { SessionContext } from '../../contexts/session-context';
 import { SocketContext } from '../../contexts/socket-context';
@@ -30,6 +31,8 @@ function MainPage() {
 
     // const [currentContact, setCurrentContact] = useState(null);
     const messageListElement = useRef();
+    const [loadingMore, setLoadingMore] = useState(false);
+    const [topReached, setTopReached] = useState(false);
     const [shouldScrollDown, setShouldScrollDown] = useState(false);
     
     const [hoveredMessage, setHoveredMessage] = useState(null);
@@ -62,19 +65,19 @@ function MainPage() {
         '<3': '❤️'
     });
 
+
     useEffect(() => {
-        if (!socket.connected) {
-            socket.connect(cookies.sid);
-        }
-
-        socket.connection.on('messageReceived', (ev) => {
-            console.log(ev);
-
-            if (ev.sender === currentContact || ev.sender === session.username) {
-                addMessage(ev.content, dayjs(ev.date), ev.sender);
-            }
-        });
+        socket.connect(cookies.sid);
+        return () => socket.disconnect();
     }, []);
+
+    useListener(socket.connection, 'messageReceived', (ev) => {
+        console.log(ev);
+
+        ) {
+            addMessage(ev.content, dayjs(ev.date), ev.sender);
+        }
+    }, [contacts.currentContact]);
 
     useEffect(() => {
         if (contacts.currentContact) {

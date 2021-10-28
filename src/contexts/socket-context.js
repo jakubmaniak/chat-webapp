@@ -5,7 +5,8 @@ import socketio from 'socket.io-client';
 export const initialSocketContext = {
     connection: null,
     connected: false,
-    connect: null
+    connect: null,
+    disconnect: null
 };
 
 initialSocketContext.connect = function(sessionID) {
@@ -19,6 +20,12 @@ initialSocketContext.connect = function(sessionID) {
     });
 
     initialSocketContext.connection = socket;
+};
+
+initialSocketContext.disconnect = function() {
+    initialSocketContext.connection.close();
+    initialSocketContext.connection = null;
+    initialSocketContext.connected = false;
 };
 
 export const SocketContext = createContext(initialSocketContext);
