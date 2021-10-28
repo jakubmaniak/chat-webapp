@@ -7,6 +7,7 @@ import 'dayjs/locale/pl';
 import api from '../../api';
 import { SessionContext } from '../../contexts/session-context';
 import { SocketContext } from '../../contexts/socket-context';
+import { ContactsContext } from '../../contexts/contacts-context';
 import Loader from '../../common/loader';
 import Contacts from './contacts';
 
@@ -18,16 +19,20 @@ dayjs.locale('pl');
 
 
 function MainPage() {
-    const { session, setSession } = useContext(SessionContext);
-    const { socket, setSocket } = useContext(SocketContext);
+    const { session } = useContext(SessionContext);
+    const { socket } = useContext(SocketContext);
+    const { contacts, setContacts } = useContext(ContactsContext);
+    const contactsRef = useRef(contacts);
     const [cookies, setCookies] = useCookies(['sid']);
 
 
     const [loading, setLoading] = useState(true);
-    const [currentContact, setCurrentContact] = useState(null);
+
+    // const [currentContact, setCurrentContact] = useState(null);
     const messageListElement = useRef();
-    const [hoveredMessage, setHoveredMessage] = useState(null);
     const [shouldScrollDown, setShouldScrollDown] = useState(false);
+    
+    const [hoveredMessage, setHoveredMessage] = useState(null);
     const groups = useRef([]);
     const [messageInputText, setMessageInputText] = useState('');
 
@@ -72,10 +77,10 @@ function MainPage() {
     }, []);
 
     useEffect(() => {
-        if (currentContact) {
+        if (contacts.currentContact) {
             loadMessages();
         }
-    }, [currentContact]);
+    }, [contacts.currentContact]);
 
     useEffect(() => {
         if (shouldScrollDown) {
@@ -87,7 +92,7 @@ function MainPage() {
     function loadMessages() {
         setLoading(true);
 
-        api.getMessages({ recipient: currentContact.name })
+        api.getMessages({ recipient: contacts.currentContact.name })
         .then((res) => {
             setLoading(false);
             addMessages(res.data);
@@ -97,7 +102,7 @@ function MainPage() {
     function submitMessage(ev) {
         ev.preventDefault();
 
-        api.sendMessage({ recipient: currentContact.name, content: messageInputText });
+        api.sendMessage({ recipient: contacts.currentContact.name, content: messageInputText });
         setMessageInputText('');
     }
 
@@ -234,7 +239,7 @@ function MainPage() {
         <div className="main-container">
             <section className="left">
                 <p>Kontakty</p>
-                <Contacts onChange={setCurrentContact} />
+                <Contacts />
             </section>
             <section className="right">
                 <div className="message-list" ref={messageListElement}>

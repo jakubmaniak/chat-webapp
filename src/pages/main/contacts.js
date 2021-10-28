@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 
 import { SessionContext } from '../../contexts/session-context';
 import { SocketContext } from '../../contexts/socket-context';
+import { ContactsContext } from '../../contexts/contacts-context';
 
 import './contacts.scss';
 
@@ -9,6 +10,7 @@ import './contacts.scss';
 function Contacts({ onChange }) {
     const { session, setSession } = useContext(SessionContext);
     const { socket, setSocket } = useContext(SocketContext);
+    const { contacts, setContacts } = useContext(ContactsContext);
 
     const [users, setUsers] = useState([
         { name: 'admin', status: 'online' },
@@ -40,6 +42,7 @@ function Contacts({ onChange }) {
 
     useEffect(() => {
         onChange?.(currentContact);
+        setContacts({ ...contacts, currentContact });
     }, [currentContact]);
 
     function makeIconStyles(iconColor) {
