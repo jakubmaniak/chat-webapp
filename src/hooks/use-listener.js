@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 
-function useListener(target, eventName, listener, deps) {
+export function useOnListener(target, eventName, listener, deps) {
     useEffect(() => {      
         target?.on(eventName, listener);
         
@@ -9,4 +9,10 @@ function useListener(target, eventName, listener, deps) {
     }, deps);
 }
 
-export default useListener;
+export function useAddListener(target, eventName, listener, deps) {
+    useEffect(() => {      
+        target?.addEventListener(eventName, listener);
+        
+        return () => target?.removeEventListener(eventName, listener);
+    }, deps);
+}

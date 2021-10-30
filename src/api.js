@@ -26,7 +26,8 @@ function sendPost(path, body = null) {
 const api = {
     userLogin: ({ username, password }) => sendPost('user/login', { username, password }),
     sendMessage: ({ recipient, content }) => sendPost('message', { recipient, content }),
-    getMessages: ({ recipient }) => sendGet('messages/' + recipient)
+    getMessages: ({ recipient }) => sendGet('messages/' + recipient),
+    getMessagesBefore: ({ recipient, messageID }) => sendGet('messages/' + recipient + '/before/' + messageID)
 };
 
 export default api;
