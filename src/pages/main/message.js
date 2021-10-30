@@ -15,13 +15,14 @@ function Message({ id, isOwned, content, date }) {
         ));
 
 
-    return <div className="message-row" key={id}>
-        <div
-            className={className}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-        >{content}</div>
-        {isHovered && <p className="message-date">{date.fromNow()}</p>}
+    return <div
+        className="message-row"
+        key={id}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+    >
+        <div className={className}>{content}</div>
+        {isHovered && <p className="message-date" title={date.format('LTS LL')}>{date.fromNow()}</p>}
     </div>;
 }
 

@@ -56,7 +56,6 @@ function MessageFeed() {
     }, [contacts.currentContact]);
 
     function onListScroll(ev) {
-        console.log({isLoadingMore, isEnded});
         if (isLoadingMore || isEnded) return;
 
         const { scrollTop, scrollHeight, offsetHeight } = ev.target;
@@ -93,32 +92,59 @@ function MessageFeed() {
         );
     }
 
+    function DateDelimeter({ date }) {
+        return <p style={{
+            color: '#707074',
+            fontSize: '12px',
+            fontWeight: '500',
+            textTransform: 'uppercase',
+            alignSelf: 'center'
+        }}>{date.format('LLL')}</p>;
+    }
+
     function renderMessages() {
         const items = [];
-        let lastMessage = messages[0];
 
-        for (const message of messages) {
-            if (lastMessage.sender !== message.sender) {
-                items.push(<MessageAuthor authorName={lastMessage.sender} />);
+        if (messages.length) {
+            let prevMessage = messages[0];
+
+            for (const message of messages) {
+                const prevMessageDay = prevMessage.date.startOf('day');
+                const day = message.date.startOf('day');
+                const isDaysVary = (prevMessageDay.diff(day, 'days') !== 0);
+
+                if (isDaysVary || prevMessage.sender !== message.sender) {
+                    items.push(<MessageAuthor
+                        key={prevMessage.sender + '-author'}
+                        authorName={prevMessage.sender}
+                    />);
+                }
+
+                if (isDaysVary) {
+                    items.push(<DateDelimeter key={prevMessage.id + '-date'} date={prevMessage.date} />);
+                }
+    
+                items.push(<Message
+                    key={message.id}
+                    id={message.id}
+                    isOwned={message.sender === session.username}
+                    content={message.content}
+                    date={message.date}
+                />);
+    
+                prevMessage = message;
             }
-
-            items.push(<Message
-                key={message.id}
-                id={message.id}
-                isOwned={message.sender === session.username}
-                content={message.content}
-                date={message.date}
+            
+            items.push(<MessageAuthor
+                key={prevMessage.sender + '-author'}
+                authorName={prevMessage.sender}
             />);
 
-            lastMessage = message;
-        }
-        
-        if (lastMessage) {
-            items.push(<MessageAuthor authorName={lastMessage.sender} />);
+            items.push(<DateDelimeter key={prevMessage.id + '-date'} date={prevMessage.date} />);
         }
 
         if (isLoadingMore) {
-            items.push(<Loader margin="8px 0" />);
+            items.push(<Loader key="loader" margin="8px 0" />);
         }
 
         return items;

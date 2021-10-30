@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 import 'dayjs/locale/pl';
 
 import { SocketContext } from '../../contexts/socket-context';
@@ -12,8 +13,9 @@ import MessageInput from './message-input';
 import './main.scss';
 
 
-dayjs.extend(relativeTime);
 dayjs.locale('pl');
+dayjs.extend(relativeTime);
+dayjs.extend(localizedFormat);
 
 
 function MainPage() {
