@@ -18,6 +18,8 @@
 .loader {
     height: 32px;
     width: 32px;
+    min-height: 32px;
+    align-self: center;
     border-radius: 32px;
     border: 3px solid rgba(#ffffff, 0.075);
     border-top-color: #4080ff;

@@ -1,9 +1,9 @@
 import './loader.scss';
 
 
-function Loader() {
+function Loader({ margin = 0 }) {
     return (
-        <div className="loader"></div>
+        <div className="loader" style={{ margin }}></div>
     );
 }
 
