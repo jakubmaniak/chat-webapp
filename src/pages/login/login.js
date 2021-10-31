@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 
 import api from '../../api';
@@ -9,8 +9,17 @@ import './login.scss';
 
 function LoginPage() {
     const history = useHistory();
+    const { session } = useContext(SessionContext);
+    
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+
+
+    useEffect(() => {
+        if (session.loggedIn) {
+            history.replace('/main');
+        }
+    }, []);
 
     function submitForm(ev) {
         ev.preventDefault();
