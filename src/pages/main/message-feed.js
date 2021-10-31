@@ -115,7 +115,7 @@ function MessageFeed() {
 
                 if (isDaysVary || prevMessage.sender !== message.sender) {
                     items.push(<MessageAuthor
-                        key={prevMessage.sender + '-author'}
+                        key={prevMessage.id + '-author'}
                         authorName={prevMessage.sender}
                     />);
                 }
@@ -136,7 +136,7 @@ function MessageFeed() {
             }
             
             items.push(<MessageAuthor
-                key={prevMessage.sender + '-author'}
+                key={prevMessage.id + '-author'}
                 authorName={prevMessage.sender}
             />);
 
