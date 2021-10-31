@@ -28,7 +28,16 @@ function MessageFeed() {
         setIsEnded(true);
         setIsLoadingMore(true);
 
-        api.getMessages({ recipient: contacts.currentContact.name })
+        let getMessages;
+
+        if (contacts.currentContact.isRoom) {
+            getMessages = api.getRoomMessages({ roomID: contacts.currentContact.id })
+        }
+        else {
+            getMessages = api.getMessages({ recipient: contacts.currentContact.name });
+        }
+
+        getMessages
         .then((res) => {
             const messages = res.data.messages.map((msg) => {
                 msg.date = dayjs(msg.date);

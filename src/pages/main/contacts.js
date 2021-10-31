@@ -13,12 +13,12 @@ function Contacts({ onChange }) {
     const { contacts, setContacts } = useContext(ContactsContext);
 
     const [users, setUsers] = useState([
-        { name: 'admin', status: 'online' },
-        { name: 'snowanka', status: 'offline' }
+        { isRoom: false, name: 'admin', status: 'online' },
+        { isRoom: false, name: 'snowanka', status: 'offline' }
     ]);
     const [rooms, setRooms] = useState([
-        { name: 'Developers', iconText: 'Dev', iconColor: [0x7c, 0x4b, 0xcc] },
-        { name: 'SPAM', iconText: 'SP', iconColor: [0x00, 0x93, 0x78]}
+        { isRoom: true, id: 'dev', name: 'Developers', iconText: 'Dev', iconColor: [0x7c, 0x4b, 0xcc] },
+        { isRoom: true, id: 'spam', name: 'SPAM', iconText: 'SP', iconColor: [0x00, 0x93, 0x78]}
     ]);
     const [currentContact, setCurrentContact] = useState(() => {
         return users.find((user) => (user.name !== session.username));
@@ -81,9 +81,9 @@ function Contacts({ onChange }) {
                 <div className="contact-section-entries">
                     {rooms.map((room) => (
                         <button
-                            key={room.name}
-                            className={(room.name === currentContact ? 'contact active' : 'contact')}
-                            onClick={() => setCurrentContact(room.name)}
+                            key={room.id}
+                            className={(room.id === currentContact.id ? 'contact active' : 'contact')}
+                            onClick={() => setCurrentContact(room)}
                         >
                             <div
                                 className="contact-icon"

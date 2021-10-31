@@ -11,10 +11,18 @@ function MessageInput() {
     function onMessageSubmit(ev) {
         ev.preventDefault();
 
-        api.sendMessage({
-            recipient: contacts.currentContact.name,
-            content: text
-        });
+        if (contacts.currentContact.isRoom) {
+            api.sendMessage({
+                roomID: contacts.currentContact.id,
+                content: text
+            });
+        }
+        else {
+            api.sendMessage({
+                recipient: contacts.currentContact.name,
+                content: text
+            });
+        }
 
         setText('');
     }
