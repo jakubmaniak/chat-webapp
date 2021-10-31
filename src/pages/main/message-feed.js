@@ -39,10 +39,7 @@ function MessageFeed() {
 
         getMessages
         .then((res) => {
-            const messages = res.data.messages.map((msg) => {
-                msg.date = dayjs(msg.date);
-                return msg;
-            });
+            const messages = res.data.messages.map((msg) => ({ ...msg, date: dayjs(msg.date), animated: false }));
 
             setMessages(messages);
             setIsEnded(res.data.ended);
@@ -60,6 +57,8 @@ function MessageFeed() {
 
     useOnListener(socket.connection, 'messageReceived', (msg) => {
         msg.date = dayjs(msg.date);
+        msg.animated = true;
+
         setMessages((messages) => [msg, ...messages]);
         setIsLoadingMore(false);
     }, [contacts.currentContact]);
@@ -80,10 +79,7 @@ function MessageFeed() {
                 messageID: lastMessage.id
             })
             .then((res) => {
-                const loadedMessages = res.data.messages.map((msg) => {
-                    msg.date = dayjs(msg.date);
-                    return msg;
-                });
+                const loadedMessages = res.data.messages.map((msg) => ({ ...msg, date: dayjs(msg.date), animated: false }));
 
                 setMessages((messages) => [...messages, ...loadedMessages]);
                 setIsEnded(res.data.ended);
@@ -137,6 +133,7 @@ function MessageFeed() {
                     key={message.id}
                     id={message.id}
                     isOwned={message.sender === session.username}
+                    isAnimated={message.animated}
                     content={message.content}
                     date={message.date}
                 />);

@@ -1,10 +1,11 @@
 import { useState } from 'react';
 
 
-function Message({ id, isOwned, content, date }) {
+function Message({ id, isOwned, isAnimated, content, date }) {
     const [isHovered, setIsHovered] = useState(false);
     
-    const className = (isOwned ? 'message owned' : 'message');
+    let className = (isOwned ? 'message owned' : 'message');
+    isAnimated && (className += ' animated');
 
     content = content
         .split(/((?:https?:\/\/|ftps?:\/\/|mailto:|magnet:)[^\s]+)/g)
