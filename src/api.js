@@ -25,7 +25,7 @@ function sendPost(path, body = null) {
 
 const api = {
     userLogin: ({ username, password }) => sendPost('user/login', { username, password }),
-    sendMessage: ({ recipient = null, roomID = null, content }) => sendPost('message', { recipient, roomID, content }),
+    sendMessage: ({ recipient = null, roomID = null, lang = null, content }) => sendPost('message', { recipient, roomID, lang, content }),
     getMessages: ({ recipient }) => sendGet('messages/' + recipient),
     getMessagesBefore: ({ recipient, messageID }) => sendGet('messages/' + recipient + '/before/' + messageID),
     getRoomMessages: ({ roomID }) => sendGet('messages/room/' + roomID)
