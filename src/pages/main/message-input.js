@@ -29,6 +29,21 @@ function MessageInput() {
             setText('');
             return;
         }
+        else if (text.trim() == '/de') {
+            setLang('de');
+            setText('');
+            return;
+        }
+        else if (text.trim() == '/ru') {
+            setLang('ru');
+            setText('');
+            return;
+        }
+        else if (text.trim() == '/ja') {
+            setLang('ja');
+            setText('');
+            return;
+        }
 
         if (contacts.currentContact.isRoom) {
             api.sendMessage({
