@@ -20,9 +20,7 @@ function MessageFeed() {
     const [isEnded, setIsEnded] = useState(true);
 
     useEffect(() => {
-        if (!contacts.currentContact) {
-            return;
-        }
+        if (!contacts.currentContact) return;
 
         setMessages([]);
         setIsEnded(true);
@@ -135,6 +133,9 @@ function MessageFeed() {
                     isOwned={message.sender === session.username}
                     isAnimated={message.animated}
                     content={message.content}
+                    hasAttachment={'attachment' in message}
+                    fileName={message.attachment?.fileName}
+                    attachmentType={message.attachment?.type}
                     date={message.date}
                 />);
     

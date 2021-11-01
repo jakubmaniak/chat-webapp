@@ -6,6 +6,7 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 import 'dayjs/locale/pl';
 
 import { SocketContext } from '../../contexts/socket-context';
+import DropZone from './drop-zone';
 import Contacts from './contacts';
 import MessageFeed from './message-feed';
 import MessageInput from './message-input';
@@ -30,6 +31,7 @@ function MainPage() {
 
     return (
         <div className="main-container">
+            <DropZone />
             <section className="left">
                 <p>Kontakty</p>
                 <Contacts />
