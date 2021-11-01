@@ -1,8 +1,11 @@
 import { useState } from 'react';
 
+import ImageViewer from './image-viewer';
 
-function Message({ id, isOwned, isAnimated, hasAttachment, content, date, attachmentType = null, fileName = null }) {
+
+function Message({ id, isOwned, isAnimated, hasAttachment, content = null, attachment = null, date }) {
     const [isHovered, setIsHovered] = useState(false);
+    const [displaysImageViewer, setDisplaysImageViewer] = useState(false);
     
     let className = (isOwned ? 'message owned' : 'message');
     isAnimated && (className += ' animated');
@@ -23,8 +26,9 @@ function Message({ id, isOwned, isAnimated, hasAttachment, content, date, attach
             attachmentNode = (
                 <img
                     className="message-attachment message-attachment-image"
-                    src={'http://localhost:3002/attachments/' + fileName}
-                    alt={fileName}
+                    src={'http://localhost:3002/attachments/' + attachment.fileName}
+                    alt={attachment.fileName}
+                    onClick={() => setDisplaysImageViewer(true)}
                 />
             );
         }
@@ -41,7 +45,8 @@ function Message({ id, isOwned, isAnimated, hasAttachment, content, date, attach
             <div className={className}>{content}</div>
             {isHovered && <p className="message-date" title={date.format('LTS LL')}>{date.fromNow()}</p>}
         </div>}
-        {hasAttachment && renderAttachment(attachmentType, fileName)}
+        {hasAttachment && renderAttachment(attachment.type, attachment.fileName)}
+        {displaysImageViewer && <ImageViewer attachment={attachment} onClose={() => setDisplaysImageViewer(false)} />}
     </div>;
 }
 

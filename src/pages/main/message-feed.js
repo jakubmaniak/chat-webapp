@@ -134,8 +134,7 @@ function MessageFeed() {
                     isAnimated={message.animated}
                     content={message.content}
                     hasAttachment={'attachment' in message}
-                    fileName={message.attachment?.fileName}
-                    attachmentType={message.attachment?.type}
+                    attachment={message.attachment ?? null}
                     date={message.date}
                 />);
     
