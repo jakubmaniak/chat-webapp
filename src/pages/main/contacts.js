@@ -56,7 +56,7 @@ function Contacts({ onChange }) {
         <div className="contact-list">
             <div className="contact-section">
                 <div className="contact-section-header">
-                    <p className="contact-section-title">CZŁONKOWIE</p>
+                    <p className="contact-section-title">LUDZIE</p>
                     <p className="contact-section-button">+</p>
                 </div>
                 <div className="contact-section-entries">
