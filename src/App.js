@@ -37,15 +37,9 @@ function App() {
           <div className="app">
             <Router>
               <Switch>
-                <Route path="/" exact>
-                  <LoginPage />
-                </Route>
-                <Route path="/login">
-                  <LoginPage />
-                </Route>
-                <Route path="/main">
-                  <MainPage />
-                </Route>
+                <Route path="/" exact component={LoginPage} />
+                <Route path="/login" component={LoginPage} />
+                <Route path="/main" component={MainPage} />
               </Switch>
             </Router>
           </div>
