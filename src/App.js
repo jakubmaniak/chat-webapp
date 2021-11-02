@@ -5,6 +5,7 @@ import { SessionContext, initialSessionContext } from './contexts/session-contex
 import { SocketContext, initialSocketContext } from './contexts/socket-context';
 import { ContactsContext, initialContactsContext } from './contexts/contacts-context';
 import LoginPage from './pages/login/login';
+import SignupPage from './pages/signup/signup';
 import LogoutPage from './pages/logout/logout';
 import MainPage from './pages/main/main';
 
@@ -40,6 +41,7 @@ function App() {
               <Switch>
                 <Route path="/" exact component={LoginPage} />
                 <Route path="/login" component={LoginPage} />
+                <Route path="/signup" component={SignupPage} />
                 <Route path="/logout" component={LogoutPage} />
                 <Route path="/main" component={MainPage} />
               </Switch>

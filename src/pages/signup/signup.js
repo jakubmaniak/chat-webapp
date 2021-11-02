@@ -5,10 +5,10 @@ import { Link } from 'react-router-dom';
 import api from '../../api';
 import { SessionContext } from '../../contexts/session-context';
 
-import './login.scss';
+import '../login/login.scss';
 
 
-function LoginPage() {
+function SignupPage() {
     const history = useHistory();
     const { session } = useContext(SessionContext);
     
@@ -25,7 +25,7 @@ function LoginPage() {
     function submitForm(ev) {
         ev.preventDefault();
         
-        api.userLogin({ username, password })
+        api.userSignup({ username, password })
             .then((results) => {
                 if (!results.error) {
                     localStorage.setItem('username', username);
@@ -52,11 +52,11 @@ function LoginPage() {
                     name="password"
                     type="password"
                 />
-                <button>Zaloguj</button>
-                <Link to="/signup">Załóż konto</Link>
+                <button>Zarejestruj</button>
+                <Link to="/login">Zaloguj się</Link>
             </form>
         </div>
     );
 }
 
-export default LoginPage;
+export default SignupPage;
