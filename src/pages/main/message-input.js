@@ -19,28 +19,10 @@ function MessageInput() {
     function onMessageSubmit(ev) {
         ev.preventDefault();
 
-        if (text.trim() == '/pl') {
-            setLang('pl');
-            setText('');
-            return;
-        }
-        else if (text.trim() == '/en') {
-            setLang('en');
-            setText('');
-            return;
-        }
-        else if (text.trim() == '/de') {
-            setLang('de');
-            setText('');
-            return;
-        }
-        else if (text.trim() == '/ru') {
-            setLang('ru');
-            setText('');
-            return;
-        }
-        else if (text.trim() == '/ja') {
-            setLang('ja');
+        const langs = ['en', 'pl', 'de', 'ru', 'ja'];
+
+        if (langs.includes(text.trim().slice(1).toLowerCase())) {
+            setLang(text.trim().slice(1).toLowerCase());
             setText('');
             return;
         }
