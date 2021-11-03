@@ -57,8 +57,23 @@ function MessageFeed() {
         msg.date = dayjs(msg.date);
         msg.animated = true;
 
+        if (msg.roomID) {
+            if (contacts.currentContact.id !== msg.roomID) return;
+        }
+        else {
+            const contactUsername = contacts.currentContact.name;
+
+            if (
+                (msg.sender === session.username && msg.recipient !== contactUsername)
+                ||
+                (msg.recipient === session.username && msg.sender !== contactUsername)
+            ) {
+                return;
+            }
+        }
+
         setMessages((messages) => [msg, ...messages]);
-        setIsLoadingMore(false);
+        //setIsLoadingMore(false);
     }, [contacts.currentContact]);
 
     function onListScroll(ev) {
