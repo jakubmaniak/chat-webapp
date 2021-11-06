@@ -1,0 +1,142 @@
+.user-box {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    height: 64px;
+    width: 352px;
+    left: 14px;
+    bottom: 14px;
+    background-color: #232326;
+    box-shadow: 0 2px 4px rgba(#333336, 0.2);
+    border-radius: 10px;
+}
+
+.user-box-user-status {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    height: 32px;
+    margin-left: 14px;
+}
+
+.user-box-username {
+    margin-top: -5px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.user-box-status {
+    display: flex;
+    align-items: center;
+    margin-top: -1px;
+    cursor: pointer;
+
+    &-icon {
+        height: 8px;
+        width: 8px;
+        border-radius: 4px;
+        background-color: #585858;
+    }
+
+    &-text {
+        margin-left: 6px;
+        color: #585858;
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    &.online {
+        .user-box-status-icon {
+            background-color: #10c000;
+        }
+
+        .user-box-status-text {
+            color: #10c000;
+        }
+    }
+
+    &.brb {
+        .user-box-status-icon {
+            background-color: #c0c030;
+        }
+
+        .user-box-status-text {
+            color: #c0c030;
+        }
+    }
+
+    &.dnd {
+        .user-box-status-icon {
+            background-color: #c03010;
+        }
+
+        .user-box-status-text {
+            color: #c03010;
+        }
+    }
+}
+
+.user-box-settings {
+    margin-right: 2px;
+    height: 24px;
+    width: 24px;
+    border-radius: 4px;
+    background-color: #585858;
+    mask-image: url('../../assets/setting.svg');
+    cursor: pointer;
+    transition: all 0.1s;
+
+    &:hover {
+        background-color: #686868;
+    }
+}
+
+.user-box-status-change-menu {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding: 16px 0;
+    border-radius: 10px;
+    background-color: #383838;
+
+    p {
+        padding-left: 24px;
+        padding-right: 32px;
+        display: flex;
+        align-items: center;
+        color: #cccccc;
+        font-size: 13px;
+        height: 30px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #404040;
+            color: #ffffff;
+        }
+
+        .status-icon {
+            height: 8px;
+            width: 8px;
+            border-radius: 4px;
+            background-color: #585858;
+        }
+
+        span.status-text {
+            margin-left: 8px;
+            font-weight: 500;
+        }
+
+        &.online .status-icon {
+            background-color: #10c000;
+        }
+
+        &.brb .status-icon {
+            background-color: #c0c030;
+        }
+
+        &.dnd .status-icon {
+            background-color: #c03010;
+        }
+    }
+}
