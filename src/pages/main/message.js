@@ -5,8 +5,9 @@ import ImageViewer from './image-viewer';
 
 function Message({ id, isOwned, isAnimated, hasAttachment, content = null, attachment = null, date }) {
     const [isHovered, setIsHovered] = useState(false);
+    const [isAttachmentHovered, setIsAttachmentHovered] = useState(false);
     const [displaysImageViewer, setDisplaysImageViewer] = useState(false);
-    
+
     let className = (isOwned ? 'message owned' : 'message');
     isAnimated && (className += ' animated');
 
@@ -23,21 +24,21 @@ function Message({ id, isOwned, isAnimated, hasAttachment, content = null, attac
         let attachmentNode;
 
         if (type === 'image') {
-            attachmentNode = (
-                <img
-                    className="message-attachment message-attachment-image"
-                    src={'http://localhost:3002/attachments/' + attachment.fileName}
-                    alt={attachment.fileName}
-                    onClick={() => setDisplaysImageViewer(true)}
-                />
-            );
+            return <img
+                className="message-attachment message-attachment-image"
+                src={'http://localhost:3002/attachments/' + attachment.fileName}
+                alt={attachment.fileName}
+                onClick={() => setDisplaysImageViewer(true)}
+                onMouseEnter={() => setIsAttachmentHovered(true)}
+                onMouseLeave={() => setIsAttachmentHovered(false)}
+            />;
         }
 
-        return <div className="message-row">{attachmentNode}</div>;
+        return null;
     }
 
     return <div key={id} className="message-container">
-        {!hasAttachment && <div
+        {content && <div
             className="message-row"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
@@ -45,7 +46,14 @@ function Message({ id, isOwned, isAnimated, hasAttachment, content = null, attac
             <div className={className}>{content}</div>
             {isHovered && <p className="message-date" title={date.format('LTS LL')}>{date.fromNow()}</p>}
         </div>}
-        {hasAttachment && renderAttachment(attachment.type, attachment.fileName)}
+        {hasAttachment && <div
+            className="message-row"
+            onMouseEnter={() => setIsAttachmentHovered(true)}
+            onMouseLeave={() => setIsAttachmentHovered(false)}
+        >
+            {renderAttachment(attachment.type, attachment.fileName)}
+            {isAttachmentHovered && <p className="message-date" title={date.format('LTS LL')}>{date.fromNow()}</p>}
+        </div>}
         {displaysImageViewer && <ImageViewer attachment={attachment} onClose={() => setDisplaysImageViewer(false)} />}
     </div>;
 }

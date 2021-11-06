@@ -154,6 +154,11 @@ section.right {
     overflow-y: auto;
 }
 
+.message-container {
+    display: flex;
+    flex-direction: column;
+}
+
 .message-author {
     display: flex;
     margin-top: 16px;
