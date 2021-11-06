@@ -4,9 +4,10 @@ import api from '../../api';
 import { SessionContext } from '../../contexts/session-context';
 import { SocketContext } from '../../contexts/socket-context';
 import { ContactsContext } from '../../contexts/contacts-context';
+import { useOnListener } from '../../hooks/use-listener';
+import Loader from '../../common/loader';
 
 import './contacts.scss';
-import Loader from '../../common/loader';
 
 
 function Contacts() {
@@ -45,7 +46,7 @@ function Contacts() {
     }, []);
 
     useEffect(() => {
-        if (socket.connection === null) {
+        if (!socket.connected) {
             return;
         }
 
@@ -58,8 +59,44 @@ function Contacts() {
                 return newUsers;
             });
         });
-    }, [socket.connection]);
+    }, [socket.connected]);
 
+    useOnListener(socket.connection, 'messageReceived', (msg) => {
+        const isRoom = !!msg.roomID;
+        const contactUsername = contacts.currentContact.name;
+        const currentRoomID = contacts.currentContact.id;
+
+        if (!isRoom && (
+            (msg.sender === session.username && msg.recipient !== contactUsername)
+            ||
+            (msg.recipient === session.username && msg.sender !== contactUsername)
+        )) {
+            setUsers((users) => {
+                const userIndex = users.findIndex((user) => user.name === msg.sender);
+
+                const newUsers = [...users];
+                newUsers[userIndex] = {
+                    ...users[userIndex],
+                    unreadCount: newUsers[userIndex].unreadCount + 1
+                };
+
+                return newUsers;
+            });
+        }
+        else if (isRoom && currentRoomID !== msg.roomID) {
+            setRooms((rooms) => {
+                const roomIndex = rooms.findIndex((room) => room.id === msg.roomID);
+
+                const newRooms = [...rooms];
+                newRooms[roomIndex] = {
+                    ...rooms[roomIndex],
+                    unreadCount: newRooms[roomIndex].unreadCount + 1
+                };
+
+                return newRooms;
+            });
+        }
+    }, [contacts.currentContact]);
 
     function makeIconStyles(iconColor) {
         return {
@@ -87,8 +124,8 @@ function Contacts() {
                             <p className="contact-name">{user.name + (user.name === session.username ? ' (Ty)' : '')}</p>
                             {
                                 (user.unreadCount === 0)
-                                ? <div className={'contact-status ' + user.status} />
-                                : <div className={'contact-unread-counter ' + user.status}>{user.unreadCount}</div>
+                                    ? <div className={'contact-status ' + user.status} />
+                                    : <div className={'contact-unread-counter ' + user.status}>{user.unreadCount}</div>
                             }
                         </button>
                     ))}
@@ -112,6 +149,9 @@ function Contacts() {
                                 style={makeIconStyles(room.iconColor)}
                             >{room.iconText}</div>
                             <p className="contact-name">{room.name}</p>
+                            {(room.unreadCount !== 0)
+                                && <div className={'contact-unread-counter online'}>{room.unreadCount}</div>
+                            }
                         </button>
                     ))}
                 </div>
