@@ -44,6 +44,7 @@ function App() {
                 <Route path="/login" component={LoginPage} />
                 <Route path="/signup" component={SignupPage} />
                 <Route path="/logout" component={LogoutPage} />
+                <Route path="/messages/:type/:contact" component={MainPage} />
                 <Route path="/messages" component={MainPage} />
                 <Route component={NotFoundPage} />
               </Switch>

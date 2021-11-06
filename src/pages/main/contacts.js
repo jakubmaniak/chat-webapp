@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
+import { useHistory, useParams } from 'react-router';
 
 import api from '../../api';
 import { SessionContext } from '../../contexts/session-context';
@@ -11,6 +12,8 @@ import './contacts.scss';
 
 
 function Contacts() {
+    const history = useHistory();
+    const { type: typeParam, contact: contactParam } = useParams();
     const { session } = useContext(SessionContext);
     const { socket } = useContext(SocketContext);
     const { contacts, setContacts } = useContext(ContactsContext);
@@ -25,6 +28,13 @@ function Contacts() {
     function updateCurrentContact(contact) {
         contact.unreadCount = 0; // WARNING: changing directly the value of property
         setContacts({ ...contacts, currentContact: contact });
+
+        if (contact.isRoom) {
+            history.push('/messages/room/' + contact.id);
+        }
+        else {
+            history.push('/messages/user/' + contact.name);
+        }
     }
 
 
@@ -39,11 +49,41 @@ function Contacts() {
                     unreadCount: 0
                 }));
 
-                updateCurrentContact(newUsers?.[0]);
+                if ((!contactParam || !typeParam) && newUsers.length) {
+                    updateCurrentContact(newUsers[0]);
+                }
+
                 setUsers(newUsers);
                 setIsLoading(false);
             });
     }, []);
+
+    useEffect(() => {
+        if (isLoading) return;
+
+        if (contactParam) {
+            console.log({ contactParam, typeParam });
+
+            if (typeParam.toLowerCase() === 'room') {
+                console.log({ rooms });
+                const room = rooms.find((room) => room.id === contactParam);
+
+                if (room) {
+                    updateCurrentContact(room);
+                }
+            }
+            else if (typeParam.toLowerCase() === 'user') {
+                const user = users.find((user) => user.name === contactParam);
+
+                if (user) {
+                    updateCurrentContact(user);
+                }
+            }
+            else {
+                history.push('/messages');
+            }
+        }
+    }, [contactParam, typeParam, isLoading]);
 
     useEffect(() => {
         if (!socket.connected) {
