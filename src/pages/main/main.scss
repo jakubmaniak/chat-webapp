@@ -34,6 +34,12 @@
     font-size: 18px;
 }
 
+@keyframes show-image-viewer {
+    from {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+}
 
 .image-viewer-wrapper {
     position: fixed;
@@ -54,7 +60,7 @@
     flex-direction: column;
     align-items: center;
     padding: 100px 100px;
-    
+    animation: show-image-viewer 0.2s;
 }
 
 .image-viewer-container > img {
