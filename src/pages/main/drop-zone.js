@@ -7,7 +7,6 @@ import { ContactsContext } from '../../contexts/contacts-context';
 
 
 function DropZone() {
-    //const dropZoneRef = useRef();
     const { contacts } = useContext(ContactsContext);
 
     const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
@@ -22,10 +21,7 @@ function DropZone() {
         window.addEventListener('focus', () => setIsVisible(false));
     }, []);
 
-    //console.log(acceptedFiles);
-
     useEffect(() => {
-        //console.log(acceptedFiles);
         if (acceptedFiles.length > 0) {
             const formData = new FormData();
             formData.append('file', acceptedFiles[0]);
@@ -68,75 +64,13 @@ function DropZone() {
         className={'drop-zone-wrapper' + (isDragging ? ' dragging' : '')}
         style={{ display: (isVisible ? 'block' : 'none') }}
         {...getRootProps()}
-        onDragEnter={(ev) => {
-            // console.log('onDragEnter');
-            // ev.preventDefault();
-            // ev.stopPropagation();
-            // ev.nativeEvent.preventDefault();
-            // ev.nativeEvent.stopPropagation();
-            // ev.nativeEvent.stopImmediatePropagation();
-            setIsDragging(true);
-            //return false;
-        }}
-        onDragLeave={(ev) => {
-            // console.log('onDragLeave');
-            // ev.preventDefault();
-            // ev.stopPropagation();
-            // ev.nativeEvent.preventDefault();
-            // ev.nativeEvent.stopPropagation();
-            // ev.nativeEvent.stopImmediatePropagation();
-            setIsDragging(false);
-            //return false;
-        }}
-        // onDragOver={(ev) => {
-        //     console.log('onDragOver');
-        //     ev.preventDefault();
-        //     ev.stopPropagation();
-        //     ev.nativeEvent.preventDefault();
-        //     ev.nativeEvent.stopPropagation();
-        //     ev.nativeEvent.stopImmediatePropagation();
-        //     return false;
-        // }}
-        // onDragStart={(ev) => {
-        //     console.log('onDragStart');
-        //     ev.preventDefault();
-        //     ev.stopPropagation();
-        //     ev.nativeEvent.preventDefault();
-        //     ev.nativeEvent.stopPropagation();
-        //     ev.nativeEvent.stopImmediatePropagation();
-        // }}
-        // onDragEnd={(ev) => {
-        //     console.log('onDragEnd');
-        //     ev.preventDefault();
-        //     ev.stopPropagation();
-        //     ev.nativeEvent.preventDefault();
-        //     ev.nativeEvent.stopPropagation();
-        //     ev.nativeEvent.stopImmediatePropagation();
-        // }}
-        // onDrag={(ev) => {
-        //     console.log('onDrag');
-        //     ev.preventDefault();
-        //     ev.stopPropagation();
-        //     ev.nativeEvent.preventDefault();
-        //     ev.nativeEvent.stopPropagation();
-        //     ev.nativeEvent.stopImmediatePropagation();
-        //     return false;
-        // }}
-        // onDrop={(ev) => {
-        //     console.log('onDrop');
-        //     ev.preventDefault();
-        //     ev.stopPropagation();
-        //     ev.nativeEvent.preventDefault();
-        //     ev.nativeEvent.stopPropagation();
-        //     ev.nativeEvent.stopImmediatePropagation();
-        //     console.log(ev);
-        //     return false;
-        // }}
+        onDragEnter={() => setIsDragging(true)}
+        onDragLeave={() => setIsDragging(false)}
     >
         <input {...getInputProps()} />
-        {/* {isDragging && <div className="drop-zone-container">
+        {isDragging && <div className="drop-zone-container">
             <div className="drop-zone-hint">Upuść pliki tutaj</div>
-        </div>} */}
+        </div>}
     </div>;
 }
 
