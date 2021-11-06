@@ -25,7 +25,7 @@ function Contacts() {
         { isRoom: true, id: 'spam', name: 'SPAM', iconText: 'SP', iconColor: [0x00, 0x93, 0x78], unreadCount: 0 }
     ]);
 
-    function updateCurrentContact(contact) {
+    function changeCurrentContact(contact) {
         contact.unreadCount = 0; // WARNING: changing directly the value of property
         setContacts({ ...contacts, currentContact: contact });
 
@@ -50,7 +50,7 @@ function Contacts() {
                 }));
 
                 if ((!contactParam || !typeParam) && newUsers.length) {
-                    updateCurrentContact(newUsers[0]);
+                    changeCurrentContact(newUsers[0]);
                 }
 
                 setUsers(newUsers);
@@ -62,21 +62,18 @@ function Contacts() {
         if (isLoading) return;
 
         if (contactParam) {
-            console.log({ contactParam, typeParam });
-
             if (typeParam.toLowerCase() === 'room') {
-                console.log({ rooms });
                 const room = rooms.find((room) => room.id === contactParam);
 
                 if (room) {
-                    updateCurrentContact(room);
+                    changeCurrentContact(room);
                 }
             }
             else if (typeParam.toLowerCase() === 'user') {
                 const user = users.find((user) => user.name === contactParam);
 
                 if (user) {
-                    updateCurrentContact(user);
+                    changeCurrentContact(user);
                 }
             }
             else {
@@ -158,7 +155,7 @@ function Contacts() {
                         <button
                             key={user.id}
                             className={(user.name === contacts.currentContact?.name ? 'contact active' : 'contact')}
-                            onClick={() => updateCurrentContact(user)}
+                            onClick={() => changeCurrentContact(user)}
                         >
                             <div className="contact-icon">{user.name.substr(0, 2)}</div>
                             <p className="contact-name">{user.name + (user.name === session.username ? ' (Ty)' : '')}</p>
@@ -182,7 +179,7 @@ function Contacts() {
                         <button
                             key={room.id}
                             className={(room.id === contacts.currentContact?.id ? 'contact active' : 'contact')}
-                            onClick={() => updateCurrentContact(room)}
+                            onClick={() => changeCurrentContact(room)}
                         >
                             <div
                                 className="contact-icon"
