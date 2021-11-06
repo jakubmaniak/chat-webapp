@@ -18,7 +18,7 @@ function LoginPage() {
 
     useEffect(() => {
         if (session.loggedIn) {
-            history.replace('/main');
+            history.replace('/messages');
         }
     }, []);
 
@@ -29,7 +29,7 @@ function LoginPage() {
             .then((results) => {
                 if (!results.error) {
                     localStorage.setItem('username', username);
-                    history.replace('/main');
+                    history.replace('/messages');
                 }
             });
     }

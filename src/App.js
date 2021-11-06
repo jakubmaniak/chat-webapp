@@ -43,7 +43,7 @@ function App() {
                 <Route path="/login" component={LoginPage} />
                 <Route path="/signup" component={SignupPage} />
                 <Route path="/logout" component={LogoutPage} />
-                <Route path="/main" component={MainPage} />
+                <Route path="/messages" component={MainPage} />
               </Switch>
             </Router>
           </div>
