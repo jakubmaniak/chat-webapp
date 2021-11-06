@@ -30,8 +30,6 @@ function MainPage() {
     useEffect(() => {
         socket.connect(cookies.sid);
 
-        console.log('what');
-
         api.getUserState()
             .then((res) => setSession({ ...session, ...res.data }));
 
