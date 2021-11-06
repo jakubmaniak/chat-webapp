@@ -1,28 +1,46 @@
 import { useContext, useEffect, useState } from 'react';
 
+import api from '../../api';
 import { SessionContext } from '../../contexts/session-context';
 import { SocketContext } from '../../contexts/socket-context';
 import { ContactsContext } from '../../contexts/contacts-context';
 
 import './contacts.scss';
+import Loader from '../../common/loader';
 
 
-function Contacts({ onChange }) {
-    const { session, setSession } = useContext(SessionContext);
-    const { socket, setSocket } = useContext(SocketContext);
+function Contacts() {
+    const { session } = useContext(SessionContext);
+    const { socket } = useContext(SocketContext);
     const { contacts, setContacts } = useContext(ContactsContext);
 
-    const [users, setUsers] = useState([
-        { isRoom: false, name: 'admin', status: 'online' },
-        { isRoom: false, name: 'snowanka', status: 'offline' }
-    ]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [users, setUsers] = useState([]);
     const [rooms, setRooms] = useState([
         { isRoom: true, id: 'dev', name: 'Developers', iconText: 'Dev', iconColor: [0x7c, 0x4b, 0xcc] },
-        { isRoom: true, id: 'spam', name: 'SPAM', iconText: 'SP', iconColor: [0x00, 0x93, 0x78]}
+        { isRoom: true, id: 'spam', name: 'SPAM', iconText: 'SP', iconColor: [0x00, 0x93, 0x78] }
     ]);
-    const [currentContact, setCurrentContact] = useState(() => {
-        return users.find((user) => (user.name !== session.username));
-    });
+
+    function updateCurrentContact(contact) {
+        setContacts({ ...contacts, currentContact: contact });
+    }
+
+
+    useEffect(() => {
+        api.getContacts()
+            .then((res) => {
+                const newUsers = res.data.users.map((user) => ({
+                    isRoom: false,
+                    id: user.id,
+                    name: user.username,
+                    status: user.status
+                }));
+
+                updateCurrentContact(newUsers?.[0]);
+                setUsers(newUsers);
+                setIsLoading(false);
+            });
+    }, []);
 
     useEffect(() => {
         if (socket.connection === null) {
@@ -31,7 +49,7 @@ function Contacts({ onChange }) {
 
         socket.connection.on('userStatusChanged', (ev) => {
             setUsers((users) => {
-                let newUsers = [ ...users ];
+                let newUsers = [...users];
                 const userIndex = newUsers.findIndex((user) => user.name === ev.username);
                 newUsers[userIndex] = { ...users[userIndex], status: ev.status };
 
@@ -40,10 +58,6 @@ function Contacts({ onChange }) {
         });
     }, [socket.connection]);
 
-    useEffect(() => {
-        onChange?.(currentContact);
-        setContacts({ ...contacts, currentContact });
-    }, [currentContact]);
 
     function makeIconStyles(iconColor) {
         return {
@@ -60,11 +74,12 @@ function Contacts({ onChange }) {
                     <p className="contact-section-button">+</p>
                 </div>
                 <div className="contact-section-entries">
+                    {isLoading && <Loader />}
                     {users.map((user) => (
                         <button
-                            key={user.name}
-                            className={(user.name === currentContact.name ? 'contact active' : 'contact')}
-                            onClick={() => setCurrentContact(user)}
+                            key={user.id}
+                            className={(user.name === contacts.currentContact?.name ? 'contact active' : 'contact')}
+                            onClick={() => updateCurrentContact(user)}
                         >
                             <div className="contact-icon">{user.name.substr(0, 2)}</div>
                             <p className="contact-name">{user.name}</p>
@@ -79,11 +94,12 @@ function Contacts({ onChange }) {
                     <p className="contact-section-button">+</p>
                 </div>
                 <div className="contact-section-entries">
+                    {isLoading && <Loader />}
                     {rooms.map((room) => (
                         <button
                             key={room.id}
-                            className={(room.id === currentContact.id ? 'contact active' : 'contact')}
-                            onClick={() => setCurrentContact(room)}
+                            className={(room.id === contacts.currentContact?.id ? 'contact active' : 'contact')}
+                            onClick={() => updateCurrentContact(room)}
                         >
                             <div
                                 className="contact-icon"
