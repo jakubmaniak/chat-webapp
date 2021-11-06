@@ -8,6 +8,7 @@ import LoginPage from './pages/login/login';
 import SignupPage from './pages/signup/signup';
 import LogoutPage from './pages/logout/logout';
 import MainPage from './pages/main/main';
+import NotFoundPage from './pages/not-found/not-found';
 
 import './App.scss';
 
@@ -44,6 +45,7 @@ function App() {
                 <Route path="/signup" component={SignupPage} />
                 <Route path="/logout" component={LogoutPage} />
                 <Route path="/messages" component={MainPage} />
+                <Route component={NotFoundPage} />
               </Switch>
             </Router>
           </div>
