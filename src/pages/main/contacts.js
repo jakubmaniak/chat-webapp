@@ -17,11 +17,12 @@ function Contacts() {
     const [isLoading, setIsLoading] = useState(true);
     const [users, setUsers] = useState([]);
     const [rooms, setRooms] = useState([
-        { isRoom: true, id: 'dev', name: 'Developers', iconText: 'Dev', iconColor: [0x7c, 0x4b, 0xcc] },
-        { isRoom: true, id: 'spam', name: 'SPAM', iconText: 'SP', iconColor: [0x00, 0x93, 0x78] }
+        { isRoom: true, id: 'dev', name: 'Developers', iconText: 'Dev', iconColor: [0x7c, 0x4b, 0xcc], unreadCount: 0 },
+        { isRoom: true, id: 'spam', name: 'SPAM', iconText: 'SP', iconColor: [0x00, 0x93, 0x78], unreadCount: 0 }
     ]);
 
     function updateCurrentContact(contact) {
+        contact.unreadCount = 0; // WARNING: changing directly the value of property
         setContacts({ ...contacts, currentContact: contact });
     }
 
@@ -33,7 +34,8 @@ function Contacts() {
                     isRoom: false,
                     id: user.id,
                     name: user.username,
-                    status: user.status
+                    status: user.status,
+                    unreadCount: 0
                 }));
 
                 updateCurrentContact(newUsers?.[0]);
@@ -82,8 +84,12 @@ function Contacts() {
                             onClick={() => updateCurrentContact(user)}
                         >
                             <div className="contact-icon">{user.name.substr(0, 2)}</div>
-                            <p className="contact-name">{user.name}</p>
-                            <div className={'contact-status ' + user.status} />
+                            <p className="contact-name">{user.name + (user.name === session.username ? ' (Ty)' : '')}</p>
+                            {
+                                (user.unreadCount === 0)
+                                ? <div className={'contact-status ' + user.status} />
+                                : <div className={'contact-unread-counter ' + user.status}>{user.unreadCount}</div>
+                            }
                         </button>
                     ))}
                 </div>

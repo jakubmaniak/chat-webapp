@@ -85,4 +85,37 @@ button.contact {
     &.online {
         background-color: #10c000;
     }
+
+    &.brb {
+        background-color: #c0c030;
+    }
+
+    &.dnd {
+        background-color: #c03010;
+    }
+}
+
+.contact-unread-counter {
+    height: 14px;
+    min-width: 20px;
+    padding: 0 6px;
+    border-radius: 7px;
+    background-color: #585858;
+    color: #000000;
+    font-size: 11px;
+    font-weight: 900;
+    line-height: 14px;
+    text-align: center;
+
+    &.online {
+        background-color: #10c000;
+    }
+
+    &.brb {
+        background-color: #c0c030;
+    }
+
+    &.dnd {
+        background-color: #c03010;
+    }
 }
