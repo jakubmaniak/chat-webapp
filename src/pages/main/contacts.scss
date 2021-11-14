@@ -23,9 +23,16 @@
 }
 
 .contact-section-button {
+    background-color: transparent;
     color: #585858;
     font-size: 20px;
     font-weight: 600;
+    cursor: pointer;
+    transition: all 0.1s;
+
+    &:hover {
+        color: #707070;
+    }
 }
 
 .contact-section-entries {

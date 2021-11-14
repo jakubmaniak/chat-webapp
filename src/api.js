@@ -36,6 +36,7 @@ const api = {
     getMessages: ({ recipient }) => sendGet('messages/' + recipient),
     getMessagesBefore: ({ recipient, messageID }) => sendGet('messages/' + recipient + '/before/' + messageID),
     getRoomMessages: ({ roomID }) => sendGet('messages/room/' + roomID),
+    createRoom: ({ name }) => sendPost('room', { name }),
     uploadAttachment: ({ }) => { },
     setUserStatus: ({ status }) => sendPut('user/status', { status })
 };

@@ -7,6 +7,7 @@ import { SocketContext } from '../../contexts/socket-context';
 import { ContactsContext } from '../../contexts/contacts-context';
 import { useOnListener } from '../../hooks/use-listener';
 import Loader from '../../common/loader';
+import CreateRoomModal from './modals/create-room-modal';
 
 import './contacts.scss';
 
@@ -24,6 +25,7 @@ function Contacts() {
         { isRoom: true, id: 'dev', name: 'Developers', iconText: 'Dev', iconColor: [0x7c, 0x4b, 0xcc], unreadCount: 0 },
         { isRoom: true, id: 'spam', name: 'SPAM', iconText: 'SP', iconColor: [0x00, 0x93, 0x78], unreadCount: 0 }
     ]);
+    const [modalVisibility, setModalVisibility] = useState({ createRoom: false });
 
     function changeCurrentContact(contact) {
         contact.unreadCount = 0; // WARNING: changing directly the value of property
@@ -49,11 +51,21 @@ function Contacts() {
                     unreadCount: 0
                 }));
 
+                const newRooms = res.data.rooms.map((room) => ({
+                    isRoom: true,
+                    id: room.id,
+                    name: room.name,
+                    iconText: room.name.slice(0, 3),
+                    iconColor: [0x7c, 0x4b, 0xcc],
+                    unreadCount: 0
+                }));
+
                 if ((!contactParam || !typeParam) && newUsers.length) {
                     changeCurrentContact(newUsers[0]);
                 }
 
                 setUsers(newUsers);
+                setRooms(newRooms);
                 setIsLoading(false);
             });
     }, []);
@@ -142,12 +154,41 @@ function Contacts() {
         };
     }
 
+    function showModal(dialogID) {
+        setModalVisibility({ ...modalVisibility, [dialogID]: true });
+    }
+
+    function hideModal(dialogID) {
+        setModalVisibility({ ...modalVisibility, [dialogID]: false });
+    }
+
+    function handleRoomCreate(roomName) {
+        api.createRoom({ name: roomName })
+        .then((res) => {
+            const newRoom = {
+                isRoom: true,
+                id: res.data.id,
+                name: roomName,
+                iconText: roomName.slice(0, 3),
+                iconColor: [0x7c, 0x4b, 0xcc],
+                unreadCount: 0
+            };
+
+            setRooms((rooms) => [
+                ...rooms,
+                newRoom
+            ]);
+
+            changeCurrentContact(newRoom);
+        });
+    }
+
     return (
         <div className="contact-list">
             <div className="contact-section">
                 <div className="contact-section-header">
                     <p className="contact-section-title">LUDZIE</p>
-                    <p className="contact-section-button">+</p>
+                    <button className="contact-section-button">+</button>
                 </div>
                 <div className="contact-section-entries">
                     {isLoading && <Loader />}
@@ -171,7 +212,12 @@ function Contacts() {
             <div className="contact-section">
                 <div className="contact-section-header">
                     <p className="contact-section-title">GRUPY</p>
-                    <p className="contact-section-button">+</p>
+                    <button className="contact-section-button" onClick={() => showModal('createRoom')}>+</button>
+                    <CreateRoomModal
+                        visible={modalVisibility.createRoom}
+                        onClose={() => hideModal('createRoom')}
+                        onSubmit={handleRoomCreate}
+                    />
                 </div>
                 <div className="contact-section-entries">
                     {isLoading && <Loader />}
