@@ -19,8 +19,8 @@ function CreateRoomModal(props) {
     }
 
     return (
-        <Modal {...props} title="Stwórz pokój" onSubmit={handleSubmit}>
-            <Input label="Nazwa pokoju" value={roomName} onChange={(ev) => setRoomName(ev.target.value)} focused />
+        <Modal {...props} title="Stwórz grupę" onSubmit={handleSubmit}>
+            <Input label="Nazwa grupy" value={roomName} onChange={(ev) => setRoomName(ev.target.value)} focused />
             <ModalFooter>
                 <Button text="Anuluj" onClick={handleCancel} />
                 <Button text="Stwórz" primary onClick={handleSubmit} />
