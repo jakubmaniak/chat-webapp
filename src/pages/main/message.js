@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import ImageViewer from './image-viewer';
 
@@ -15,14 +15,12 @@ function Message({ id, isOwned, isAnimated, hasAttachment, content = null, attac
         ?.split(/((?:https?:\/\/|ftps?:\/\/|mailto:|magnet:)[^\s]+)/g)
         ?.map((segment, i) => (
             (i % 2)
-            ? <a href={segment} rel="noopener noreferrer nofollow" target="_blank">{segment}</a>
-            : segment
+            ? <a key={i} href={segment} rel="noopener noreferrer nofollow" target="_blank">{segment}</a>
+            : <React.Fragment key={i}>{segment}</React.Fragment>
         ));
 
 
     function renderAttachment(type, fileName) {
-        let attachmentNode;
-
         if (type === 'image') {
             return <img
                 className="message-attachment message-attachment-image"
@@ -37,7 +35,7 @@ function Message({ id, isOwned, isAnimated, hasAttachment, content = null, attac
         return null;
     }
 
-    return <div key={id} className="message-container">
+    return <div className="message-container">
         {content && <div
             className="message-row"
             onMouseEnter={() => setIsHovered(true)}
