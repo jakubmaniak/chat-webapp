@@ -10,7 +10,24 @@ function ImageViewer({ attachment, onClose }) {
         else {
             setIsVisible(false);
         }
+
+        const onKeyUp = (ev) => {
+            if (ev.key === 'Escape') {
+                close();
+            }
+        };
+
+        window.addEventListener('keyup', onKeyUp);
+
+        return () => {
+           window.removeEventListener('keyup', onKeyUp);
+        };
     }, [attachment]);
+
+    function close() {
+        setIsVisible(false);
+        onClose?.();
+    }
 
     function getSizeText() {
         if (attachment.size < 1024) {
@@ -50,10 +67,7 @@ function ImageViewer({ attachment, onClose }) {
         return null;
     }
 
-    return <div className="image-viewer-wrapper" onClick={() => {
-        setIsVisible(false);
-        onClose?.();
-    }}>
+    return <div className="image-viewer-wrapper" onClick={close}>
         {attachment && 
             <div className="image-viewer-container">
                 <img src={'http://localhost:3002/attachments/' + attachment.fileName}/>
