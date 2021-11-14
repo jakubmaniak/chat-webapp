@@ -10,6 +10,7 @@ import Loader from '../../common/loader';
 import CreateRoomModal from './modals/create-room-modal';
 
 import './contacts.scss';
+import Tooltip from '../../common/tooltip';
 
 
 function Contacts() {
@@ -188,7 +189,9 @@ function Contacts() {
             <div className="contact-section">
                 <div className="contact-section-header">
                     <p className="contact-section-title">LUDZIE</p>
-                    <button className="contact-section-button">+</button>
+                    <Tooltip text="Dodaj użytkownika">
+                        <button className="contact-section-button">+</button>
+                    </Tooltip>
                 </div>
                 <div className="contact-section-entries">
                     {isLoading && <Loader />}
@@ -212,7 +215,9 @@ function Contacts() {
             <div className="contact-section">
                 <div className="contact-section-header">
                     <p className="contact-section-title">GRUPY</p>
-                    <button className="contact-section-button" onClick={() => showModal('createRoom')}>+</button>
+                    <Tooltip text="Dodaj grupę">
+                        <button className="contact-section-button" onClick={() => showModal('createRoom')}>+</button>
+                    </Tooltip>
                     <CreateRoomModal
                         visible={modalVisibility.createRoom}
                         onClose={() => hideModal('createRoom')}

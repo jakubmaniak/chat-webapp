@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 
 import api from '../../api';
+import Tooltip from '../../common/tooltip';
 import { SessionContext } from '../../contexts/session-context';
 
 import './user-box.scss';
@@ -49,15 +50,19 @@ function UserBox() {
         </div>
         <div className="user-box-user-status">
             <div className="user-box-username">{localStorage.username}</div>
-            <div
-                className={'user-box-status ' + session.status}
-                onClick={() => setStatusMenuVisible(true)}
-            >
-                <div className="user-box-status-icon"></div>
-                <p className="user-box-status-text">{statusTexts[session.status]}</p>
-            </div>
+            <Tooltip text="Zmień status">
+                <div
+                    className={'user-box-status ' + session.status}
+                    onClick={() => setStatusMenuVisible(true)}
+                >
+                    <div className="user-box-status-icon"></div>
+                    <p className="user-box-status-text">{statusTexts[session.status]}</p>
+                </div>
+            </Tooltip>
         </div>
-        <div className="user-box-settings" title="Ustawienia"></div>
+        <Tooltip text="Ustawienia">
+            <div className="user-box-settings"></div>
+        </Tooltip>
         {statusMenuVisible && renderChangeStatusMenu()}
     </div>;
 }
