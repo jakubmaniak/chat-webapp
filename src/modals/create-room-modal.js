@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import Modal, { Button, Input, ModalFooter } from '../../../common/modal';
+import Modal, { Button, Input, ModalFooter } from '../common/modal';
 
 
 function CreateRoomModal(props) {
