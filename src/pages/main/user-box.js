@@ -1,8 +1,10 @@
 import { useContext, useEffect, useState } from 'react';
 
 import api from '../../api';
-import Tooltip from '../../common/tooltip';
 import { SessionContext } from '../../contexts/session-context';
+import Tooltip from '../../common/tooltip';
+import UserAvatar from '../../common/user-avatar';
+import SetAvatarModal from '../../modals/set-avatar-modal';
 
 import './user-box.scss';
 
@@ -11,6 +13,7 @@ function UserBox() {
     const { session, setSession } = useContext(SessionContext);
 
     const [statusMenuVisible, setStatusMenuVisible] = useState(false);
+    const [changeAvatarModalVisible, setChangeAvatarModalVisible] = useState(false);
 
     const statusTexts = {
         online: 'dostępny',
@@ -45,9 +48,15 @@ function UserBox() {
     }
 
     return <div className="user-box">
-        <div className="user-box-avatar">
-            <div className="contact-icon"></div>
-        </div>
+        <Tooltip text="Zmień awatar">
+            <div
+                className="user-box-avatar"
+                onClick={() => setChangeAvatarModalVisible(true)}
+            >
+                <UserAvatar avatarID={session.avatar} />
+            </div>
+        </Tooltip>
+        <SetAvatarModal visible={changeAvatarModalVisible} onClose={() => setChangeAvatarModalVisible(false)} />
         <div className="user-box-user-status">
             <div className="user-box-username">{localStorage.username}</div>
             <Tooltip text="Zmień status">

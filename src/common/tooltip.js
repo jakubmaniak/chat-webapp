@@ -1,4 +1,5 @@
 import { useState } from 'react';
+
 import './tooltip.scss';
 
 
@@ -16,7 +17,6 @@ function Tooltip({ text, children }) {
     }
 
     function handleMove(ev) {
-        console.log(ev);
         if (!visible) return;
 
         setX(ev.pageX + 24 + 'px');

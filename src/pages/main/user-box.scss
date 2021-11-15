@@ -11,6 +11,10 @@
     border-radius: 10px;
 }
 
+.user-box-avatar {
+    cursor: pointer;
+}
+
 .user-box-user-status {
     display: flex;
     flex-direction: column;
