@@ -14,6 +14,7 @@
 .modal-container {
     background-color: #2b2b30;
     border-radius: 10px;
+    z-index: 10000;
 }
 
 .modal-header {
@@ -70,6 +71,33 @@
     }
 }
 
+.modal-file-dropzone {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    width: 320px;
+    background-color: #4a4a4e;
+    border-radius: 4px;
+
+    .modal-button {
+        white-space: nowrap;
+    }
+}
+
+.modal-file-name {
+    margin-left: 12px;
+    font-size: 13px;
+    line-height: 24px;
+    height: 24px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.modal-file-input {
+    display: none;
+}
+
 .modal-button {
     padding: 8px 12px;
     background-color: #404044;
@@ -81,6 +109,12 @@
         background-color: #10c000;
         color: #101010;
         font-weight: 500;
+    }
+
+    &[disabled] {
+        background-color: #36363a;
+        color: #606060;
+        cursor: not-allowed;
     }
 }
 

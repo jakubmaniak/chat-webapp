@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react';
+
 import './modal.scss';
+
 
 export function Input({ label, focused = false, value = '', onChange = null }) {
     const inputRef = useRef();
@@ -24,7 +26,7 @@ export function Input({ label, focused = false, value = '', onChange = null }) {
     );
 }
 
-export function Button({ text, primary = false, onClick = null }) {
+export function Button({ text, primary = false, disabled = false, onClick = null }) {
     let className = 'modal-button';
 
     if (primary) {
@@ -32,7 +34,7 @@ export function Button({ text, primary = false, onClick = null }) {
     }
 
     return (
-        <button className={className} onClick={onClick}>{text}</button>
+        <button className={className} onClick={onClick} disabled={disabled}>{text}</button>
     );
 }
 
@@ -46,6 +48,23 @@ export function ModalFooter(props) {
     return (
         <div className="modal-footer">{props.children}</div>
     )
+}
+
+export function FileDropzone(props) {
+    const fileInputRef = useRef();
+
+    return (
+        <div className="modal-file-dropzone">
+            <Button text="Wybierz plik..." onClick={() => fileInputRef.current.click()} />
+            <span className="modal-file-name">{props.label ?? ''}</span>
+            <input
+                className="modal-file-input"
+                type="file"
+                ref={fileInputRef}
+                onChange={(ev) => props?.onChange(ev.target.files)}
+            />
+        </div>
+    );
 }
 
 function Modal({ visible = false, title, closeable = true, onClose, children }) {
