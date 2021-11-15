@@ -12,6 +12,7 @@ import DropZone from './drop-zone';
 import Contacts from './contacts';
 import MessageFeed from './message-feed';
 import MessageInput from './message-input';
+import Sidebar from './sidebar';
 import UserBox from './user-box';
 
 import './main.scss';
@@ -44,9 +45,12 @@ function MainPage() {
                 <Contacts />
                 <UserBox />
             </section>
-            <section className="right">
+            <section className="center">
                 <MessageFeed />
                 <MessageInput />
+            </section>
+            <section className="right">
+                <Sidebar />
             </section>
         </div>
     );

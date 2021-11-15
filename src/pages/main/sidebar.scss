@@ -1,0 +1,107 @@
+.sidebar {
+    width: 380px;
+    height: 100%;
+    padding: 30px;
+    background-color: #15151a;
+}
+
+.sidebar-header {
+    display: flex;
+}
+
+.conversation-info-box {
+    margin-left: 12px;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+
+    .conversation-name {
+        color: #cccccc;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .conversation-extra-info {
+        color: #585858;
+        font-size: 13px;
+        font-weight: 500;
+        user-select: none;
+    }
+}
+
+button.sidebar-settings-button {
+    height: 24px;
+    width: 24px;
+    background-color: transparent;
+    background-image: url('../../assets/settings.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+.sidebar-section {
+    margin-top: 40px;
+}
+
+.sidebar-section-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+    height: 24px;
+}
+
+.sidebar-section-title {
+    flex: 1;
+    color: #585858;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    user-select: none;
+}
+
+button.sidebar-add-button {
+    height: 16px;
+    width: 16px;
+    background-color: transparent;
+    background-image: url('../../assets/add.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+.sidebar-room-member {
+    display: flex;
+    align-items: center;
+
+    + .sidebar-room-member {
+        margin-top: 12px;
+    }
+
+    &.online .sidebar-room-member-status {
+        background-color: #10c000;
+    }
+
+    &.brb .sidebar-room-member-status {
+        background-color: #c0c030;
+    }
+
+    &.dnd .sidebar-room-member-status {
+        background-color: #c03010;
+    }
+}
+
+span.sidebar-room-member-username {
+    flex: 1;
+    margin-left: 12px;
+    color: #cccccc;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.sidebar-room-member-status {
+    margin-right: 4px;
+    height: 8px;
+    width: 8px;
+    border-radius: 4px;
+    background-color: #585858;
+}
