@@ -53,7 +53,7 @@ function UserBox() {
                 className="user-box-avatar"
                 onClick={() => setChangeAvatarModalVisible(true)}
             >
-                <UserAvatar avatarID={session.avatar} />
+                <UserAvatar avatarID={session.avatar} name={session.username} />
             </div>
         </Tooltip>
         <SetAvatarModal visible={changeAvatarModalVisible} onClose={() => setChangeAvatarModalVisible(false)} />

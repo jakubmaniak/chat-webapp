@@ -16,12 +16,14 @@
     flex-direction: column;
 
     .conversation-name {
+        margin-top: -4px;
         color: #cccccc;
         font-size: 14px;
         font-weight: 600;
     }
 
     .conversation-extra-info {
+        margin-top: -2px;
         color: #585858;
         font-size: 13px;
         font-weight: 500;

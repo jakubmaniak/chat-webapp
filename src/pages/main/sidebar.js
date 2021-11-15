@@ -1,8 +1,9 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import plural from '../../helpers/plural';
 import { ContactsContext } from '../../contexts/contacts-context';
 import { ConversationContext } from '../../contexts/conversation-context';
+import { SocketContext } from '../../contexts/socket-context';
 import UserAvatar from '../../common/user-avatar';
 
 import './sidebar.scss';
@@ -19,6 +20,28 @@ const statusTexts = {
 function Sidebar() {
     const { contacts } = useContext(ContactsContext);
     const { conversation } = useContext(ConversationContext);
+    const { socket } = useContext(SocketContext);
+    const [userStatuses, setUserStatuses] = useState(() => new Map());
+
+    useEffect(() => {
+        if (conversation.isRoom) {
+            let newStatuses = new Map();
+
+            if (conversation.users) {
+                newStatuses = new Map([...conversation.users.values()].map((user) => [user.username, user.status]));
+            }
+
+            setUserStatuses(newStatuses);
+        }
+    }, [conversation])
+
+    useEffect(() => {
+        socket.connection?.on('userStatusChanged', (ev) => {
+            setUserStatuses((userStatuses) => {
+                return new Map([...userStatuses.entries(), [ev.username, ev.status]]);
+            });
+        });
+    }, [socket.connected]);
 
     function getConversationExtraInfo() {
         if (!contacts.currentContact) return;
@@ -35,8 +58,8 @@ function Sidebar() {
     function renderMembers() {
         return [...conversation.users.values()].map((user) => {
             return (
-                <div key={user.id} className={'sidebar-room-member ' + conversation.users.get(user.username).status}>
-                    <UserAvatar avatarID={user.avatar} />
+                <div key={user.id} className={'sidebar-room-member ' + userStatuses.get(user.username)}>
+                    <UserAvatar avatarID={user.avatar} name={user.username} />
                     <span className="sidebar-room-member-username">{user.username}</span>
                     <div className="sidebar-room-member-status"></div>
                 </div>
@@ -47,7 +70,11 @@ function Sidebar() {
     return (
         <div className="sidebar">
             <div className="sidebar-header">
-                <UserAvatar avatarID={contacts.currentContact?.avatar} />
+                <UserAvatar
+                    avatarID={contacts.currentContact?.avatar}
+                    name={contacts.currentContact?.name}
+                    wide={contacts.currentContact?.isRoom}
+                />
                 <div className="conversation-info-box">
                     <p className="conversation-name">{contacts.currentContact?.name}</p>
                     <p className="conversation-extra-info">{getConversationExtraInfo()}</p>

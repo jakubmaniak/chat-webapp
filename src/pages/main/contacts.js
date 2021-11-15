@@ -23,10 +23,7 @@ function Contacts() {
 
     const [isLoading, setIsLoading] = useState(true);
     const [users, setUsers] = useState([]);
-    const [rooms, setRooms] = useState([
-        { isRoom: true, id: 'dev', name: 'Developers', iconText: 'Dev', iconColor: [0x7c, 0x4b, 0xcc], unreadCount: 0 },
-        { isRoom: true, id: 'spam', name: 'SPAM', iconText: 'SP', iconColor: [0x00, 0x93, 0x78], unreadCount: 0 }
-    ]);
+    const [rooms, setRooms] = useState([]);
     const [modalVisibility, setModalVisibility] = useState({ createRoom: false });
 
     function changeCurrentContact(contact) {
@@ -203,8 +200,7 @@ function Contacts() {
                             className={(user.name === contacts.currentContact?.name ? 'contact active' : 'contact')}
                             onClick={() => changeCurrentContact(user)}
                         >
-                            {/*<div className="contact-icon">{user.name.substr(0, 2)}</div>*/}
-                            <UserAvatar avatarID={user.avatar} />
+                            <UserAvatar avatarID={user.avatar} name={user.username} />
                             <p className="contact-name">{user.name + (user.name === session.username ? ' (Ty)' : '')}</p>
                             {
                                 (user.unreadCount === 0)
@@ -235,10 +231,7 @@ function Contacts() {
                             className={(room.id === contacts.currentContact?.id ? 'contact active' : 'contact')}
                             onClick={() => changeCurrentContact(room)}
                         >
-                            <div
-                                className="contact-icon"
-                                style={makeIconStyles(room.iconColor)}
-                            >{room.iconText}</div>
+                            <UserAvatar name={room.name} wide />
                             <p className="contact-name">{room.name}</p>
                             {(room.unreadCount !== 0)
                                 && <div className={'contact-unread-counter online'}>{room.unreadCount}</div>
