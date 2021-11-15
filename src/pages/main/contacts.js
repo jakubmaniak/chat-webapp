@@ -7,10 +7,11 @@ import { SocketContext } from '../../contexts/socket-context';
 import { ContactsContext } from '../../contexts/contacts-context';
 import { useOnListener } from '../../hooks/use-listener';
 import Loader from '../../common/loader';
-import CreateRoomModal from './modals/create-room-modal';
+import Tooltip from '../../common/tooltip';
+import UserAvatar from '../../common/user-avatar';
+import CreateRoomModal from '../../modals/create-room-modal';
 
 import './contacts.scss';
-import Tooltip from '../../common/tooltip';
 
 
 function Contacts() {
@@ -48,6 +49,7 @@ function Contacts() {
                     isRoom: false,
                     id: user.id,
                     name: user.username,
+                    avatar: user.avatar,
                     status: user.status,
                     unreadCount: 0
                 }));
@@ -201,7 +203,8 @@ function Contacts() {
                             className={(user.name === contacts.currentContact?.name ? 'contact active' : 'contact')}
                             onClick={() => changeCurrentContact(user)}
                         >
-                            <div className="contact-icon">{user.name.substr(0, 2)}</div>
+                            {/*<div className="contact-icon">{user.name.substr(0, 2)}</div>*/}
+                            <UserAvatar avatarID={user.avatar} />
                             <p className="contact-name">{user.name + (user.name === session.username ? ' (Ty)' : '')}</p>
                             {
                                 (user.unreadCount === 0)
