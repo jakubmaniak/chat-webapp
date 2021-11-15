@@ -4,20 +4,25 @@ import dayjs from 'dayjs';
 import api from '../../api';
 import { ContactsContext } from '../../contexts/contacts-context';
 import { SocketContext } from '../../contexts/socket-context';
+import { SessionContext } from '../../contexts/session-context';
+import { ConversationContext } from '../../contexts/conversation-context';
 import { useOnListener } from '../../hooks/use-listener';
 import Message from './message';
-import { SessionContext } from '../../contexts/session-context';
 import Loader from '../../common/loader';
+import UserAvatar from '../../common/user-avatar';
+
 
 function MessageFeed() {
     const { contacts } = useContext(ContactsContext);
     const { session } = useContext(SessionContext);
     const { socket } = useContext(SocketContext);
+    const { conversation, setConversation } = useContext(ConversationContext);
     
     const messageListRef = useRef();
     const [messages, setMessages] = useState([]);
     const [isLoadingMore, setIsLoadingMore] = useState(true);
     const [isEnded, setIsEnded] = useState(true);
+
 
     useEffect(() => {
         if (!contacts.currentContact) return;
@@ -29,7 +34,18 @@ function MessageFeed() {
         let getMessages;
 
         if (contacts.currentContact.isRoom) {
-            getMessages = api.getRoomMessages({ roomID: contacts.currentContact.id })
+            getMessages = api.getRoomMessages({ roomID: contacts.currentContact.id });
+
+            api.getRoomState({ roomID: contacts.currentContact.id })
+            .then((res) => {
+                setConversation({
+                    isRoom: true,
+                    roomID: res.data.id,
+                    name: res.data.name,
+                    owner: res.data.owner,
+                    users: new Map(res.data.users.map((user) => [user.username, user]))
+                });
+            });
         }
         else {
             getMessages = api.getMessages({ recipient: contacts.currentContact.name });
@@ -102,9 +118,18 @@ function MessageFeed() {
     }
 
     function MessageAuthor({ authorName }) {
+        let avatarNode;
+
+        if (contacts.currentContact.isRoom) {
+            avatarNode = <UserAvatar avatarID={conversation.users.get(authorName)?.avatar} />;
+        }
+        else {
+            avatarNode = <div className="message-author-avatar">{authorName.slice(0, 2)}</div>;
+        }
+        
         return (
             <div className="message-author">
-                <div className="message-author-avatar">{authorName.slice(0, 2)}</div>
+                {avatarNode}
                 <p className="message-author-username">{authorName}</p>
             </div>
         );

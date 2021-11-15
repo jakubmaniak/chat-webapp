@@ -35,6 +35,7 @@ const api = {
     sendMessage: ({ recipient = null, roomID = null, lang = null, content, fileName = null }) => sendPost('message', { recipient, roomID, lang, content, fileName }),
     getMessages: ({ recipient }) => sendGet('messages/' + recipient),
     getMessagesBefore: ({ recipient, messageID }) => sendGet('messages/' + recipient + '/before/' + messageID),
+    getRoomState: ({ roomID }) => sendGet('room/' + roomID),
     getRoomMessages: ({ roomID }) => sendGet('messages/room/' + roomID),
     createRoom: ({ name }) => sendPost('room', { name }),
     setUserAvatar: ({ avatarID }) => sendPut('user/avatar', { avatarID }),
