@@ -150,7 +150,7 @@ section.right {
 }
 
 .message-list {
-    position: relative;
+    //position: relative;
     flex: 1;
     align-items: flex-start;
     //border: 3px solid #4080ff;
@@ -263,6 +263,15 @@ section.right {
         border-color: #484850; //424247
         filter: brightness(0.9);
     }
+}
+
+.message-date-delimeter {
+    margin-top: 8px;
+    align-self: center;
+    color: #707074;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;    
 }
 
 

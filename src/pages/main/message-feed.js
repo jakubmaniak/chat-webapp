@@ -111,13 +111,7 @@ function MessageFeed() {
     }
 
     function DateDelimeter({ date }) {
-        return <p style={{
-            color: '#707074',
-            fontSize: '12px',
-            fontWeight: '500',
-            textTransform: 'uppercase',
-            alignSelf: 'center'
-        }}>{date.format('LLL')}</p>;
+        return <p className="message-date-delimeter">{date.format('LLL')}</p>;
     }
 
     function renderMessages() {
