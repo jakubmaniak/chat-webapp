@@ -1,7 +1,7 @@
 import './user-avatar.scss';
 
 
-function UserAvatar({ avatarID }) {
+function UserAvatar({ avatarID, name = null, wide = false }) {
     if (avatarID) {
         return (
             <div
@@ -9,6 +9,9 @@ function UserAvatar({ avatarID }) {
                 style={{ backgroundImage: `url('http://localhost:3002/avatars/${avatarID}')` }}
             ></div>
         );
+    }
+    else if (name) {
+        return <div className="user-avatar">{name.slice(0, wide ? 3 : 2)}</div>;
     }
     else {
         return <div className="user-avatar"></div>;
