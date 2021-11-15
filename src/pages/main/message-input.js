@@ -20,25 +20,37 @@ function MessageInput() {
         ev.preventDefault();
 
         const langs = ['en', 'pl', 'de', 'ru', 'ja'];
+        let msgContent = text.trim();
+        let msgLang = lang;
 
-        if (langs.includes(text.trim().slice(1).toLowerCase())) {
-            setLang(text.trim().slice(1).toLowerCase());
-            setText('');
-            return;
+        if (msgContent.startsWith('/')) {
+            if (langs.includes(msgContent.slice(1, 3).toLowerCase())) {
+                msgContent = msgContent.slice(3).trim();
+
+                if (msgContent) {
+                    msgContent = text.slice(3).trim();
+                    msgLang = text.slice(1, 3).toLowerCase();
+                }
+                else {
+                    setLang(msgContent.slice(1, 3).toLowerCase());
+                    setText('');
+                    return;
+                }    
+            }
         }
 
         if (contacts.currentContact.isRoom) {
             api.sendMessage({
                 roomID: contacts.currentContact.id,
-                lang,
-                content: text
+                lang: msgLang,
+                content: msgContent
             });
         }
         else {
             api.sendMessage({
                 recipient: contacts.currentContact.name,
-                lang,
-                content: text
+                lang: msgLang,
+                content: msgContent
             });
         }
 
