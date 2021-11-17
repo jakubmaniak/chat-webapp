@@ -9,6 +9,7 @@ function MessageInput() {
 
     const [lang, setLang] = useState(null);
     const [text, setText] = useState('');
+    const [canSend, setCanSend] = useState(false);
 
     useEffect(() => {
         if (!contacts.currentContact) return;
@@ -18,6 +19,8 @@ function MessageInput() {
 
     function onMessageSubmit(ev) {
         ev.preventDefault();
+
+        if (!canSend) return;
 
         const langs = ['en', 'pl', 'de', 'ru', 'ja'];
         let msgContent = text.trim();
@@ -34,8 +37,9 @@ function MessageInput() {
                 else {
                     setLang(msgContent.slice(1, 3).toLowerCase());
                     setText('');
+                    setCanSend(false);
                     return;
-                }    
+                }
             }
         }
 
@@ -55,15 +59,31 @@ function MessageInput() {
         }
 
         setText('');
+        setCanSend(false);
     }
+
+    function onInputChange(ev) {
+        setText(ev.target.value);
+
+        if (canSend && ev.target.value.trim() === '') {
+            setCanSend(false);
+        }
+        else {
+            setCanSend(true);
+        }
+    }
+
 
     return <form className="message-box" onSubmit={onMessageSubmit}>
         <input
             className="message-input"
             value={text}
-            onChange={(ev) => setText(ev.target.value)}
+            onChange={onInputChange}
             placeholder="Wiadomość..."
         />
+        <div className="message-box-buttons">
+            <button className="message-box-send-button" disabled={!canSend}></button>
+        </div>
     </form>;
 }
 
