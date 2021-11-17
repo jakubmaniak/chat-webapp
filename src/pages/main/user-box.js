@@ -1,8 +1,7 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 
 import api from '../../api';
 import { SessionContext } from '../../contexts/session-context';
-import Tooltip from '../../common/tooltip';
 import UserAvatar from '../../common/user-avatar';
 import SetAvatarModal from '../../modals/set-avatar-modal';
 
@@ -48,30 +47,27 @@ function UserBox() {
     }
 
     return <div className="user-box">
-        <Tooltip text="Zmień awatar">
-            <div
-                className="user-box-avatar"
-                onClick={() => setChangeAvatarModalVisible(true)}
-            >
-                <UserAvatar avatarID={session.avatar} name={session.username} />
-            </div>
-        </Tooltip>
+        <div
+            className="user-box-avatar"
+            onClick={() => setChangeAvatarModalVisible(true)}
+            data-tip="Zmień awatar"
+        >
+            <UserAvatar avatarID={session.avatar} name={session.username} />
+        </div>
         <SetAvatarModal visible={changeAvatarModalVisible} onClose={() => setChangeAvatarModalVisible(false)} />
         <div className="user-box-user-status">
             <div className="user-box-username">{localStorage.username}</div>
-            <Tooltip text="Zmień status">
-                <div
-                    className={'user-box-status ' + session.status}
-                    onClick={() => setStatusMenuVisible(true)}
-                >
-                    <div className="user-box-status-icon"></div>
-                    <p className="user-box-status-text">{statusTexts[session.status]}</p>
-                </div>
-            </Tooltip>
+            <div
+                className={'user-box-status ' + session.status}
+                onClick={() => setStatusMenuVisible(true)}
+                data-tip="Zmień status"
+            >
+                <div className="user-box-status-icon"></div>
+                <p className="user-box-status-text">{statusTexts[session.status]}</p>
+            </div>
         </div>
-        <Tooltip text="Ustawienia">
-            <div className="user-box-settings"></div>
-        </Tooltip>
+        <div className="user-box-settings" data-tip="Ustawienia"></div>
+        
         {statusMenuVisible && renderChangeStatusMenu()}
     </div>;
 }

@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
+import ReactTooltip from 'react-tooltip';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
@@ -52,6 +53,7 @@ function MainPage() {
             <section className="right">
                 <Sidebar />
             </section>
+            <ReactTooltip place="right" effect="float" />
         </div>
     );
 }

@@ -7,7 +7,6 @@ import { SocketContext } from '../../contexts/socket-context';
 import { ContactsContext } from '../../contexts/contacts-context';
 import { useOnListener } from '../../hooks/use-listener';
 import Loader from '../../common/loader';
-import Tooltip from '../../common/tooltip';
 import UserAvatar from '../../common/user-avatar';
 import CreateRoomModal from '../../modals/create-room-modal';
 
@@ -188,9 +187,7 @@ function Contacts() {
             <div className="contact-section">
                 <div className="contact-section-header">
                     <p className="contact-section-title">LUDZIE</p>
-                    <Tooltip text="Dodaj użytkownika">
-                        <button className="contact-section-button">+</button>
-                    </Tooltip>
+                    <button className="contact-section-button" data-tip="Dodaj użytkownika">+</button>
                 </div>
                 <div className="contact-section-entries">
                     {isLoading && <Loader />}
@@ -214,9 +211,11 @@ function Contacts() {
             <div className="contact-section">
                 <div className="contact-section-header">
                     <p className="contact-section-title">GRUPY</p>
-                    <Tooltip text="Dodaj grupę">
-                        <button className="contact-section-button" onClick={() => showModal('createRoom')}>+</button>
-                    </Tooltip>
+                    <button
+                        className="contact-section-button"
+                        onClick={() => showModal('createRoom')}
+                        data-tip="Dodaj grupę"
+                    >+</button>
                     <CreateRoomModal
                         visible={modalVisibility.createRoom}
                         onClose={() => hideModal('createRoom')}

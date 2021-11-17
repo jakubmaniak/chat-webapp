@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
+import ReactTooltip from 'react-tooltip';
 
 import plural from '../../helpers/plural';
 import { ContactsContext } from '../../contexts/contacts-context';
@@ -9,7 +10,6 @@ import UserAvatar from '../../common/user-avatar';
 import './sidebar.scss';
 import api from '../../api';
 import ImageViewer from './image-viewer';
-import Tooltip from '../../common/tooltip';
 
 
 const statusTexts = {
@@ -61,6 +61,8 @@ function Sidebar() {
                 .then((res) => {
                     setAttachments(res.data.attachments);
                 });
+
+            ReactTooltip.rebuild();
         }
         else if (contacts.currentContact?.isRoom === false) {
             api.getAttachments({ recipient: contacts.currentContact.name })
@@ -162,18 +164,14 @@ function Sidebar() {
                     <p className="conversation-name">{contacts.currentContact?.name}</p>
                     <p className="conversation-extra-info">{getConversationExtraInfo()}</p>
                 </div>
-                <Tooltip text={(contacts.currentContact?.isRoom ? 'Ustawienia grupy' : 'Ustawienia konwersacji')} horizontalPosition="left">
-                    <button className="sidebar-settings-button"></button>
-                </Tooltip>
+                <button className="sidebar-settings-button" data-tip={(contacts.currentContact?.isRoom ? 'Ustawienia grupy' : 'Ustawienia konwersacji')}></button>
             </div>
             <div className="sidebar-sections">
                 {contacts.currentContact?.isRoom && (
                     <div className="sidebar-section">
                         <div className="sidebar-section-header">
                             <div className="sidebar-section-title">Członkowie</div>
-                            <Tooltip text="Dodaj członka grupy" horizontalPosition="left">
-                                <button className="sidebar-add-button"></button>
-                            </Tooltip>
+                            <button className="sidebar-add-button" data-tip="Dodaj członka grupy"></button>
                         </div>
                         <div className="sidebar-section-content">
                             {renderMembers()}
