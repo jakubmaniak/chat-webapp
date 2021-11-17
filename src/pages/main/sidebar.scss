@@ -34,11 +34,16 @@
 button.sidebar-settings-button {
     height: 24px;
     width: 24px;
-    background-color: transparent;
-    background-image: url('../../assets/settings.svg');
+    background-color: #585858;
+    mask-image: url('../../assets/setting.svg');
     background-position: center;
     background-repeat: no-repeat;
     cursor: pointer;
+    transition: background-color 0.1s;
+
+    &:hover {
+        background-color: #686868;
+    }
 }
 
 .sidebar-section {
@@ -106,4 +111,30 @@ span.sidebar-room-member-username {
     width: 8px;
     border-radius: 4px;
     background-color: #585858;
+}
+
+.sidebar-attachments {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.sidebar-attachment {
+    &:nth-child(3n + 2) {
+        margin-left: 10px;
+    }
+
+    &:nth-child(3n + 3) {
+        margin-left: 10px;
+    }
+}
+
+.sidebar-attachment-image {
+    margin-bottom: 12px;
+    height: 100px;
+    width: 100px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #383838;
+    background-size: cover;
+    cursor: pointer;
 }

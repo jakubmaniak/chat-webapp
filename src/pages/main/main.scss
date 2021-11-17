@@ -254,6 +254,8 @@ section.center {
 }
 
 .message-attachment-image {
+    min-width: 32px;
+    min-height: 32px;
     max-width: 50%;
     border: 1px solid #3b3b40;
     cursor: pointer;

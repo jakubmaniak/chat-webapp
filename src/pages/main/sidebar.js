@@ -7,6 +7,9 @@ import { SocketContext } from '../../contexts/socket-context';
 import UserAvatar from '../../common/user-avatar';
 
 import './sidebar.scss';
+import api from '../../api';
+import ImageViewer from './image-viewer';
+import Tooltip from '../../common/tooltip';
 
 
 const statusTexts = {
@@ -22,6 +25,9 @@ function Sidebar() {
     const { conversation } = useContext(ConversationContext);
     const { socket } = useContext(SocketContext);
     const [userStatuses, setUserStatuses] = useState(() => new Map());
+    const [attachments, setAttachments] = useState([]);
+    const [displaysImageViewer, setDisplaysImageViewer] = useState(false);
+    const [displayedAttachment, setDisplayedAttachment] = useState(null);
 
     useEffect(() => {
         if (conversation.isRoom) {
@@ -41,7 +47,28 @@ function Sidebar() {
                 return new Map([...userStatuses.entries(), [ev.username, ev.status]]);
             });
         });
+
+        socket.connection?.on('messageReceived', (msg) => {
+            if (msg.attachment) {
+                setAttachments((attachments) => [msg.attachment, ...attachments]);
+            }
+        });
     }, [socket.connected]);
+
+    useEffect(() => {
+        if (contacts.currentContact?.isRoom) {
+            api.getRoomAttachments({ roomID: contacts.currentContact.id })
+                .then((res) => {
+                    setAttachments(res.data.attachments);
+                });
+        }
+        else if (contacts.currentContact?.isRoom === false) {
+            api.getAttachments({ recipient: contacts.currentContact.name })
+            .then((res) => {
+                setAttachments(res.data.attachments);
+            });
+        }
+    }, [contacts.currentContact]);
 
     function getConversationExtraInfo() {
         if (!contacts.currentContact) return;
@@ -67,6 +94,62 @@ function Sidebar() {
         });
     }
 
+    function renderMultimedia() {
+        const images = attachments.filter((attachment) => attachment.type === 'image');
+
+        return images.map((image, i) => {
+            const firstRow = (i < 3);
+            const lastRow = (Math.floor(i / 3) === Math.floor((images.length - 1) / 3));
+            const first = (i === 0);
+            const last = (i === images.length - 1);
+            const firstInRow = (i % 3 === 0);
+            const nextRowLast = (Math.floor(i / 3) + 1 === Math.floor((images.length - 1) / 3));
+            const lastRowFull = (images.length % 3 === 0);
+
+            const borderRadius = [0, 0, 0, 0];
+
+            if (first) {
+                borderRadius[0] = '10px';
+            }
+
+            if (lastRow && firstInRow) {
+                borderRadius[3] = '10px';
+            }
+
+            if (last) {
+                borderRadius[2] = '10px';
+
+                if (firstRow) {
+                    borderRadius[1] = '10px';
+                }
+            }
+
+            if (nextRowLast && !lastRowFull && i % 3 == 2) {
+                borderRadius[2] = '10px';
+            }
+
+            if (images.length > 3 && i == 2) {
+                borderRadius[1] = '10px';
+            }
+
+            return (
+                <div
+                    key={image.fileName}
+                    data-key={image.fileName}
+                    className="sidebar-attachment"
+                    onClick={() => { setDisplayedAttachment(image); setDisplaysImageViewer(true); }}>
+                    <div
+                        className="sidebar-attachment-image"
+                        style={{
+                            backgroundImage: `url('http://localhost:3002/attachments/${image.fileName}')`,
+                            borderRadius: borderRadius.join(' ')
+                        }}
+                    ></div>
+                </div>
+            );
+        });
+    }
+
     return (
         <div className="sidebar">
             <div className="sidebar-header">
@@ -79,21 +162,36 @@ function Sidebar() {
                     <p className="conversation-name">{contacts.currentContact?.name}</p>
                     <p className="conversation-extra-info">{getConversationExtraInfo()}</p>
                 </div>
-                <button className="sidebar-settings-button"></button>
+                <Tooltip text={(contacts.currentContact?.isRoom ? 'Ustawienia grupy' : 'Ustawienia konwersacji')} horizontalPosition="left">
+                    <button className="sidebar-settings-button"></button>
+                </Tooltip>
             </div>
             <div className="sidebar-sections">
                 {contacts.currentContact?.isRoom && (
                     <div className="sidebar-section">
                         <div className="sidebar-section-header">
                             <div className="sidebar-section-title">Członkowie</div>
-                            <button className="sidebar-add-button"></button>
+                            <Tooltip text="Dodaj członka grupy" horizontalPosition="left">
+                                <button className="sidebar-add-button"></button>
+                            </Tooltip>
                         </div>
                         <div className="sidebar-section-content">
                             {renderMembers()}
                         </div>
                     </div>
                 )}
+                {(attachments.length > 0) && (
+                    <div className="sidebar-section">
+                        <div className="sidebar-section-header">
+                            <div className="sidebar-section-title">Multimedia</div>
+                        </div>
+                        <div className="sidebar-section-content sidebar-attachments">
+                            {renderMultimedia()}
+                        </div>
+                    </div>
+                )}
             </div>
+            {displaysImageViewer && <ImageViewer attachment={displayedAttachment} onClose={() => setDisplaysImageViewer(false)} />}
         </div>
     );
 }
