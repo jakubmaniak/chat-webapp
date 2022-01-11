@@ -5,8 +5,22 @@
     background-color: #15151a;
 }
 
+@media screen and (max-width: 1250px) {
+    .sidebar,
+    section.right {
+        width: 100%;
+    }
+}
+
+@media screen and (min-width: 1250px) {
+    .sidebar-back-button {
+        display: none;
+    }
+}
+
 .sidebar-header {
     display: flex;
+    align-items: center;
 }
 
 .conversation-info-box {
@@ -136,5 +150,52 @@ span.sidebar-room-member-username {
     background-position: center;
     background-color: #383838;
     background-size: cover;
+    cursor: pointer;
+}
+
+.sidebar-settings-menu {
+    position: absolute;
+    top: 30px;
+    right: 24px;
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0;
+    background-color: #383838;
+    border-radius: 10px;
+    user-select: none;
+
+    p {
+        padding: 0 24px;
+        display: flex;
+        align-items: center;
+        color: #cccccc;
+        font-size: 13px;
+        font-weight: 500;
+        height: 30px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #404040;
+            color: #ffffff;
+        }
+
+        &.unsafe {
+            color: #ee6243;
+        }
+
+        &.separator {
+            margin: 10px 0;
+            height: 1px;
+            border-top: 1px solid #505050;
+        }
+    }
+}
+
+.sidebar-back-button {
+    margin-right: 12px;
+    height: 24px;
+    width: 24px;
+    background-color: #585858;
+    mask-image: url('../../assets/back.svg');
     cursor: pointer;
 }

@@ -1,0 +1,44 @@
+.add-room-member-search-results {
+    margin-top: 8px;
+    padding: 4px 0;
+    height: 200px;
+    border: 1px solid #5a5a5e;
+    border-radius: 4px;
+    overflow-y: auto;
+}
+
+.add-room-member-search-item {
+    display: flex;
+    align-items: center;
+    padding: 4px 8px;
+    cursor: pointer;
+
+    &:nth-child(2n) {
+        background-color: rgba(#ffffff, 0.02);
+    }
+
+    &:nth-child(2n + 1) {
+        background-color: rgba(#ffffff, 0.01);
+    }
+
+    p {
+        margin-left: 8px;
+        color: #cccccc;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    &.selected {
+        background-color: #10c000;
+        
+        p {
+            color: #101010;
+            font-weight: 500;
+        }
+    }
+}
+
+.add-room-member-search-placeholder {
+    margin-top: 24px;
+    text-align: center;
+}

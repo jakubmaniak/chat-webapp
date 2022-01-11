@@ -26,11 +26,15 @@ export function Input({ label, focused = false, value = '', onChange = null }) {
     );
 }
 
-export function Button({ text, primary = false, disabled = false, onClick = null }) {
+export function Button({ text, primary = false, unsafe = false, disabled = false, onClick = null }) {
     let className = 'modal-button';
 
     if (primary) {
         className += ' primary';
+    }
+
+    if (unsafe) {
+        className += ' unsafe';
     }
 
     return (
@@ -69,9 +73,9 @@ export function FileDropzone(props) {
 
 function Modal({ visible = false, title, closeable = true, onClose, children }) {
     function handleOverlayClick(ev) {
-        if (onClose && ev.target === ev.currentTarget) {
-            onClose();
-        }
+        // if (onClose && ev.target === ev.currentTarget) {
+        //     onClose();
+        // }
     }
 
     if (!visible) {

@@ -45,6 +45,11 @@
 
 .modal-content {
     margin: 0 24px;
+
+    p {
+        color: #c0c0c0;
+        font-size: 14px;
+    }
 }
 
 .modal-input-box {
@@ -103,12 +108,18 @@
     background-color: #404044;
     border-radius: 4px;
     color: #e0e0e0;
+    font-size: 14px;
     cursor: pointer;
 
     &.primary {
         background-color: #10c000;
         color: #101010;
         font-weight: 500;
+    }
+
+    &.unsafe {
+        background-color: #c03010;
+        color: #ffffff;
     }
 
     &[disabled] {

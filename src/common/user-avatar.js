@@ -1,11 +1,11 @@
 import './user-avatar.scss';
 
 
-function UserAvatar({ avatarID, name = null, wide = false }) {
+function UserAvatar({ avatarID, name = null, wide = false, large = false }) {
     if (avatarID) {
         return (
             <div
-                className="user-avatar"
+                className={'user-avatar' + (large ? ' large' : '')}
                 style={{ backgroundImage: `url('http://localhost:3002/avatars/${avatarID}')` }}
             ></div>
         );

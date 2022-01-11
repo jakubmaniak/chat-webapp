@@ -11,4 +11,9 @@
     font-weight: 600;
     line-height: 32px;
     text-align: center;
+
+    &.large {
+        height: 64px;
+        width: 64px;
+    }
 }

@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
+import { ToastContainer } from 'react-toastify';
 import ReactTooltip from 'react-tooltip';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
@@ -7,6 +8,8 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 import 'dayjs/locale/pl';
 
 import api from '../../api';
+import useI18n from '../../hooks/use-i18n';
+import useNav from '../../hooks/use-nav';
 import { SocketContext } from '../../contexts/socket-context';
 import { SessionContext } from '../../contexts/session-context';
 import DropZone from './drop-zone';
@@ -16,7 +19,9 @@ import MessageInput from './message-input';
 import Sidebar from './sidebar';
 import UserBox from './user-box';
 
+import 'react-toastify/dist/ReactToastify.css';
 import './main.scss';
+import InvitationReceiver from './invitation-receiver';
 
 
 dayjs.locale('pl');
@@ -25,6 +30,8 @@ dayjs.extend(localizedFormat);
 
 
 function MainPage() {
+    const { focusedSection, fullView } = useNav();
+    const { i18n } = useI18n();
     const { socket } = useContext(SocketContext);
     const { session, setSession } = useContext(SessionContext);
     const [cookies] = useCookies(['sid']);
@@ -38,11 +45,16 @@ function MainPage() {
         return () => socket.disconnect();
     }, []);
 
+    let className = 'main-container';
+
+    if (/*!fullView && */focusedSection) className += ` ${focusedSection}-focused`;
+
     return (
-        <div className="main-container">
+        <div className={className}>
             <DropZone />
+            <ToastContainer limit={4} />
             <section className="left">
-                <p>Kontakty</p>
+                <p>{i18n('contacts')}</p>
                 <Contacts />
                 <UserBox />
             </section>
@@ -54,6 +66,7 @@ function MainPage() {
                 <Sidebar />
             </section>
             <ReactTooltip place="right" effect="float" />
+            <InvitationReceiver />
         </div>
     );
 }

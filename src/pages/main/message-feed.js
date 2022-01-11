@@ -11,13 +11,17 @@ import Message from './message';
 import Loader from '../../common/loader';
 import UserAvatar from '../../common/user-avatar';
 
+import './message-feed.scss';
+import useNav from '../../hooks/use-nav';
+
 
 function MessageFeed() {
+    const { navigateTo, fullView } = useNav();
     const { contacts } = useContext(ContactsContext);
     const { session } = useContext(SessionContext);
     const { socket } = useContext(SocketContext);
     const { conversation, setConversation } = useContext(ConversationContext);
-    
+
     const messageListRef = useRef();
     const [messages, setMessages] = useState([]);
     const [isLoadingMore, setIsLoadingMore] = useState(true);
@@ -25,9 +29,9 @@ function MessageFeed() {
 
 
     useEffect(() => {
-        if (!contacts.currentContact) return;
-
         setMessages([]);
+        if (!contacts.currentContact) return;
+        
         setIsEnded(true);
         setIsLoadingMore(true);
 
@@ -37,28 +41,28 @@ function MessageFeed() {
             getMessages = api.getRoomMessages({ roomID: contacts.currentContact.id });
 
             api.getRoomState({ roomID: contacts.currentContact.id })
-            .then((res) => {
-                setConversation({
-                    isRoom: true,
-                    roomID: res.data.id,
-                    name: res.data.name,
-                    owner: res.data.owner,
-                    users: new Map(res.data.users.map((user) => [user.username, user]))
+                .then((res) => {
+                    setConversation({
+                        isRoom: true,
+                        roomID: res.data.id,
+                        name: res.data.name,
+                        owner: res.data.owner,
+                        users: new Map(res.data.users.map((user) => [user.username, user]))
+                    });
                 });
-            });
         }
         else {
             getMessages = api.getMessages({ recipient: contacts.currentContact.name });
         }
 
         getMessages
-        .then((res) => {
-            const messages = res.data.messages.map((msg) => ({ ...msg, date: dayjs(msg.date), animated: false }));
+            .then((res) => {
+                const messages = res.data.messages.map((msg) => ({ ...msg, date: dayjs(msg.date), animated: false }));
 
-            setMessages(messages);
-            setIsEnded(res.data.ended);
-            setIsLoadingMore(false);
-        });
+                setMessages(messages);
+                setIsEnded(res.data.ended);
+                setIsLoadingMore(false);
+            });
     }, [contacts.currentContact]);
 
     // useEffect(() => {
@@ -107,26 +111,26 @@ function MessageFeed() {
                 recipient: contacts.currentContact.name,
                 messageID: lastMessage.id
             })
-            .then((res) => {
-                const loadedMessages = res.data.messages.map((msg) => ({ ...msg, date: dayjs(msg.date), animated: false }));
+                .then((res) => {
+                    const loadedMessages = res.data.messages.map((msg) => ({ ...msg, date: dayjs(msg.date), animated: false }));
 
-                setMessages((messages) => [...messages, ...loadedMessages]);
-                setIsEnded(res.data.ended);
-                setIsLoadingMore(false);
-            });
+                    setMessages((messages) => [...messages, ...loadedMessages]);
+                    setIsEnded(res.data.ended);
+                    setIsLoadingMore(false);
+                });
         }
     }
 
     function MessageAuthor({ authorName }) {
         let avatarNode;
 
-        if (contacts.currentContact.isRoom) {
+        if (contacts.currentContact?.isRoom) {
             avatarNode = <UserAvatar avatarID={conversation.users.get(authorName)?.avatar} />;
         }
         else {
             avatarNode = <div className="message-author-avatar">{authorName.slice(0, 2)}</div>;
         }
-        
+
         return (
             <div className="message-author">
                 {avatarNode}
@@ -160,7 +164,7 @@ function MessageFeed() {
                 if (isDaysVary) {
                     items.push(<DateDelimeter key={prevMessage.id + '-date'} date={prevMessage.date} />);
                 }
-    
+
                 items.push(<Message
                     key={message.id}
                     id={message.id}
@@ -171,10 +175,10 @@ function MessageFeed() {
                     attachment={message.attachment ?? null}
                     date={message.date}
                 />);
-    
+
                 prevMessage = message;
             }
-            
+
             items.push(<MessageAuthor
                 key={prevMessage.id + '-author'}
                 authorName={prevMessage.sender}
@@ -183,16 +187,37 @@ function MessageFeed() {
             items.push(<DateDelimeter key={prevMessage.id + '-date'} date={prevMessage.date} />);
         }
 
-        if (isLoadingMore) {
+
+        if (contacts.users.length === 0 && contacts.rooms.length === 0) {
+            items.push(<p className="no-contacts-placeholder">Nie masz kontaktów, ale nie przejmuj się tym</p>);
+        }
+        else if (isLoadingMore) {
             items.push(<Loader key="loader" margin="8px 0" />);
         }
 
         return items;
     }
 
-    return <div className="message-list" onScroll={onListScroll} ref={messageListRef}>
-        {renderMessages()}
-    </div>;
+    return (
+        <div className="message-feed-container">
+            <div className="message-feed-buttons-container">
+                <button
+                    className="message-feed-button-back"
+                    data-tip="Kontakty"
+                    onClick={() => navigateTo('left')}
+                ></button>
+                <div className="spacer"></div>
+                <button
+                    className="message-feed-button-sidebar"
+                    data-tip="Ukryj pasek boczny"
+                    onClick={() => navigateTo('right')}
+                ></button>
+            </div>
+            <div className="message-list" onScroll={onListScroll} ref={messageListRef}>
+                {renderMessages()}
+            </div>
+        </div>
+    );
 }
 
 export default MessageFeed;

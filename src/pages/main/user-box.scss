@@ -143,3 +143,41 @@
         }
     }
 }
+
+.user-box-settings-menu {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0;
+    background-color: #383838;
+    border-radius: 10px;
+    user-select: none;
+
+    p {
+        padding: 0 24px;
+        display: flex;
+        align-items: center;
+        color: #cccccc;
+        font-size: 13px;
+        font-weight: 500;
+        height: 30px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #404040;
+            color: #ffffff;
+        }
+
+        &.unsafe {
+            color: #ee6243;
+        }
+
+        &.separator {
+            margin: 10px 0;
+            height: 1px;
+            border-top: 1px solid #505050;
+        }
+    }
+}

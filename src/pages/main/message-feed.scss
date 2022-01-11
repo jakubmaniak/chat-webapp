@@ -1,0 +1,48 @@
+.message-feed-container {
+    position: relative;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.message-feed-buttons-container {
+    position: absolute;
+    right: 30px;
+    left: 30px;
+    padding-top: 36px;
+    padding-bottom: 16px;
+    display: flex;
+    background-color: #1b1b20;
+
+    button {
+        height: 24px;
+        width: 24px;
+        background-color: #585858;
+        cursor: pointer;
+    }
+
+    .spacer {
+        flex: 1;
+    }
+}
+
+.message-feed-button-sidebar {
+    mask-image: url('../../assets/sidebar.svg');
+
+    @media screen and (min-width: 1250px) {
+        display: none;
+    }
+}
+
+.message-feed-button-back {
+    mask-image: url('../../assets/back.svg');
+
+    @media screen and (min-width: 1250px) {
+        display: none;
+    }
+}
+
+.no-contacts-placeholder {
+    width: 100%;
+    text-align: center;
+    color: #e0e0e0;
+}

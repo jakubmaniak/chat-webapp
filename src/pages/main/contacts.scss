@@ -1,3 +1,16 @@
+.main-container.left-focused {
+    @media screen and (max-width: 1250px) {
+        section.left {
+            width: 100%;
+        }
+
+        .user-box {
+            right: 14px;
+            width: auto;
+        }
+    }
+}
+
 .contact-list {
     margin-top: 16px;
     display: flex;
@@ -9,6 +22,7 @@
 }
 
 .contact-section-header {
+    position: relative;
     display: flex;
     align-items: center;
     margin-bottom: 16px;
@@ -124,5 +138,47 @@ button.contact {
 
     &.dnd {
         background-color: #c03010;
+    }
+}
+
+.add-room-menu {
+    position: absolute;
+    right: -12px;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0;
+    background-color: #383838;
+    border-radius: 10px;
+    user-select: none;
+
+    p {
+        padding: 0 24px;
+        display: flex;
+        align-items: center;
+        color: #cccccc;
+        font-size: 13px;
+        font-weight: 500;
+        height: 30px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #404040;
+            color: #ffffff;
+        }
+
+        &.unsafe {
+            color: #ee6243;
+        }
+
+        &.disabled {
+            color: #707070;
+        }
+
+        &.separator {
+            margin: 10px 0;
+            height: 1px;
+            border-top: 1px solid #505050;
+        }
     }
 }

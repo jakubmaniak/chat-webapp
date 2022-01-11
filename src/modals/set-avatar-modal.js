@@ -6,17 +6,20 @@ import { SessionContext } from '../contexts/session-context';
 import Modal, { Button, FileDropzone, Input, ModalFooter } from '../common/modal';
 
 import './set-avatar-modal.scss';
+import UserAvatar from '../common/user-avatar';
 
 
 function SetAvatarModal(props) {
     const { session, setSession } = useContext(SessionContext);
 
+    const [changed, setChanged] = useState(false);
     const [canSubmit, setCanSubmit] = useState(false);
     const [fileName, setFileName] = useState('Nie wybrano pliku');
     const [imageURL, setImageURL] = useState(null);
     const [file, setFile] = useState(null);
 
     function reset() {
+        setChanged(false);
         setCanSubmit(false);
         setFile(null);
         setFileName('Nie wybrano pliku');
@@ -57,6 +60,7 @@ function SetAvatarModal(props) {
             return;
         }
 
+        setChanged(true);
         setFile(files[0]);
         setFileName(files[0].name);
         setCanSubmit(true);
@@ -65,17 +69,24 @@ function SetAvatarModal(props) {
         setImageURL(blob);
     }
 
-    return (
-        <Modal {...props} title="Zmień awatar" onSubmit={handleSubmit} onClose={handleCancel}>
-            <div className="avatar-preview-container">
+    function renderAvatar() {
+        if (changed) {
+            return (
                 <div
                     className="avatar-preview large"
                     style={{ backgroundImage: `url('${imageURL}')` }}
                 ></div>
-                <div
-                    className="avatar-preview small"
-                    style={{ backgroundImage: `url('${imageURL}')` }}
-                ></div>
+            );
+        }
+        else {
+            return <UserAvatar avatarID={session.avatar} name={session.username} large />
+        }
+    }
+
+    return (
+        <Modal {...props} title="Zmień awatar" onSubmit={handleSubmit} onClose={handleCancel}>
+            <div className="avatar-preview-container">
+                {renderAvatar()}
                 <FileDropzone label={fileName} onChange={handleFilesChange} />
             </div>
             <ModalFooter>
