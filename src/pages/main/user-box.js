@@ -9,6 +9,7 @@ import SetAvatarModal from '../../modals/set-avatar-modal';
 
 import './user-box.scss';
 import { SocketContext } from '../../contexts/socket-context';
+import { useEffect } from 'react';
 
 
 function UserBox() {
@@ -24,6 +25,15 @@ function UserBox() {
 
     const statuses = ['online', 'brb', 'dnd', 'invisible', 'offline'];
 
+    useEffect(() => {
+        if (!socket.connected) return;
+
+        socket.connection.on('userStatusChanged', (ev) => {
+            if (ev.username === session.username) {
+                setSession({ ...session, status: ev.status });
+            }
+        });
+    }, [socket.connected]);
 
     function updateUserStatus(newStatus) {
         const prevStatus = session.status;
@@ -38,7 +48,7 @@ function UserBox() {
             .then(() => {
                 window.localStorage.clear();
                 socket.connection.disconnect();
-                
+
                 setSession({ ...session, loggedIn: false });
 
                 setTimeout(() => {
