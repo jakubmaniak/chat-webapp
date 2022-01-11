@@ -22,6 +22,7 @@ import UserBox from './user-box';
 import 'react-toastify/dist/ReactToastify.css';
 import './main.scss';
 import InvitationReceiver from './invitation-receiver';
+import { useHistory } from 'react-router-dom';
 
 
 dayjs.locale('pl');
@@ -30,6 +31,7 @@ dayjs.extend(localizedFormat);
 
 
 function MainPage() {
+    const history = useHistory();
     const { focusedSection, fullView } = useNav();
     const { i18n } = useI18n();
     const { socket } = useContext(SocketContext);
@@ -40,7 +42,14 @@ function MainPage() {
         socket.connect(cookies.sid);
 
         api.getUserState()
-            .then((res) => setSession({ ...session, ...res.data }));
+            .then((res) => {
+                if (res.error) {
+                    history.replace('/login');
+                }
+                else {
+                    setSession({ ...session, ...res.data });
+                }
+            });
 
         return () => socket.disconnect();
     }, []);

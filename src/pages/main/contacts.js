@@ -15,13 +15,16 @@ import AddUserModal from '../../modals/add-user-modal';
 import useI18n from '../../hooks/use-i18n';
 import AddRoomModal from '../../modals/add-room-modal';
 import useNav from '../../hooks/use-nav';
+import useToast from '../../hooks/use-toast';
 
 
 function Contacts() {
     const history = useHistory();
-    const { navigateTo } = useNav();
     const { type: typeParam, contact: contactParam } = useParams();
+
+    const { navigateTo } = useNav();
     const { i18n } = useI18n();
+    const toast = useToast();
 
     const { session } = useContext(SessionContext);
     const { socket } = useContext(SocketContext);
@@ -124,6 +127,10 @@ function Contacts() {
     useEffect(() => {
         api.getContacts()
             .then((res) => {
+                if (res.error) {
+                    setIsLoading(false);
+                    return toast.error('Nie udało się załadować kontaktów');
+                }
                 // if (res.data.users.length === 0 && res.data.rooms.length === 0) {
                 //     setContacts({ ...contacts, noContacts: true });
                 // }
@@ -347,7 +354,7 @@ function Contacts() {
                             className={(user.name === contacts.currentContact?.name ? 'contact active' : 'contact')}
                             onClick={() => changeCurrentContact(user)}
                         >
-                            <UserAvatar avatarID={user.avatar} name={user.username} />
+                            <UserAvatar avatarID={user.avatar} name={user.name} />
                             <p className="contact-name">{user.name + (user.name === session.username ? ' (Ty)' : '')}</p>
                             {
                                 (user.unreadCount === 0)
