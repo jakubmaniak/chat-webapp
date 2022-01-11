@@ -8,12 +8,15 @@ import UserAvatar from '../../common/user-avatar';
 import SetAvatarModal from '../../modals/set-avatar-modal';
 
 import './user-box.scss';
+import { SocketContext } from '../../contexts/socket-context';
 
 
 function UserBox() {
     const { i18n, lang, setLang } = useI18n();
     const history = useHistory();
+
     const { session, setSession } = useContext(SessionContext);
+    const { socket } = useContext(SocketContext);
 
     const [statusMenuVisible, setStatusMenuVisible] = useState(false);
     const [userSettingsMenuVisible, setUserSettingsMenuVisible] = useState(false);
@@ -34,10 +37,13 @@ function UserBox() {
         api.userLogout()
             .then(() => {
                 window.localStorage.clear();
+                socket.connection.disconnect();
+                
+                setSession({ ...session, loggedIn: false });
 
                 setTimeout(() => {
                     history.replace('/login');
-                }, 200);
+                }, 300);
             });
     }
 
