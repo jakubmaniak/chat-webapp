@@ -11,9 +11,12 @@
     font-weight: 600;
     line-height: 32px;
     text-align: center;
+    user-select: none;
 
     &.large {
         height: 64px;
         width: 64px;
+        font-size: 26px;
+        line-height: 64px;
     }
 }
