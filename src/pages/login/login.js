@@ -41,9 +41,6 @@ function LoginPage() {
                 else if (res.code === 'USER_NOT_FOUND') {
                     toast.error('Użytkownik o tej nazwie nie istnieje');
                 }
-                else if (res.code === 'PASSWORD_TOO_SHORT') {
-                    toast.error('Podane hasło jest za krótkie');
-                }
                 else {
                     toast.error('Wystąpił nieokreślony błąd');
                 }
