@@ -32,7 +32,7 @@ dayjs.extend(localizedFormat);
 
 function MainPage() {
     const history = useHistory();
-    const { focusedSection, fullView } = useNav();
+    const { focusedSection } = useNav();
     const { i18n } = useI18n();
     const { socket } = useContext(SocketContext);
     const { session, setSession } = useContext(SessionContext);
@@ -56,7 +56,7 @@ function MainPage() {
 
     let className = 'main-container';
 
-    if (/*!fullView && */focusedSection) className += ` ${focusedSection}-focused`;
+    if (focusedSection) className += ` ${focusedSection}-focused`;
 
     return (
         <div className={className}>

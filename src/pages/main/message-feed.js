@@ -16,7 +16,7 @@ import useNav from '../../hooks/use-nav';
 
 
 function MessageFeed() {
-    const { navigateTo, fullView } = useNav();
+    const { navigateTo } = useNav();
     const { contacts } = useContext(ContactsContext);
     const { session } = useContext(SessionContext);
     const { socket } = useContext(SocketContext);
@@ -31,7 +31,7 @@ function MessageFeed() {
     useEffect(() => {
         setMessages([]);
         if (!contacts.currentContact) return;
-        
+
         setIsEnded(true);
         setIsLoadingMore(true);
 
