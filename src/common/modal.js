@@ -72,18 +72,12 @@ export function FileDropzone(props) {
 }
 
 function Modal({ visible = false, title, closeable = true, onClose, children }) {
-    function handleOverlayClick(ev) {
-        // if (onClose && ev.target === ev.currentTarget) {
-        //     onClose();
-        // }
-    }
-
     if (!visible) {
         return null;
     }
 
     return (
-        <div className="modal-overlay" onClick={handleOverlayClick}>
+        <div className="modal-overlay">
             <div className="modal-container">
                 <div className="modal-header">
                     <p className="modal-header-title">{title}</p>
