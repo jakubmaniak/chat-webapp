@@ -163,6 +163,12 @@ section.left {
     background-color: #060608;
     color: #e0e0e0;
     overflow-y: auto;
+
+    > p {
+        font-size: 18px;
+        font-weight: 500;
+        user-select: none;
+    }
 }
 
 
