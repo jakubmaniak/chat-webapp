@@ -21,6 +21,7 @@ function UserBox() {
 
     const [statusMenuVisible, setStatusMenuVisible] = useState(false);
     const [userSettingsMenuVisible, setUserSettingsMenuVisible] = useState(false);
+    const [i18nLangMenuVisible, setI18nLangMenuVisible] = useState(false);
     const [changeAvatarModalVisible, setChangeAvatarModalVisible] = useState(false);
 
     const statuses = ['online', 'brb', 'dnd', 'invisible', 'offline'];
@@ -57,16 +58,9 @@ function UserBox() {
             });
     }
 
-    function handleSetLang() {
-        if (lang.code === 'pl') {
-            setLang('en');
-        }
-        else if (lang.code === 'en') {
-            setLang('de');
-        }
-        else {
-            setLang('pl');
-        }
+    function handleSetLang(langCode) {
+        setLang(langCode);
+        setI18nLangMenuVisible(false);
     }
 
     function handleAvatarChange() {
@@ -97,13 +91,21 @@ function UserBox() {
     function renderUserSettingsMenu() {
         return (
             <div className="menu-wrapper">
-                <div className="menu-overlay" onClick={() => setUserSettingsMenuVisible(false)}></div>
+                {!i18nLangMenuVisible && (
+                    <div className="menu-overlay" onClick={() => setUserSettingsMenuVisible(false)}></div>
+                )}
                 <div className="user-box-settings-menu">
-                    <p onClick={handleSetLang}>{i18n('currentLanguage')} {lang.name}</p>
+                    <p onClick={() => setI18nLangMenuVisible(true)}>{i18n('currentLanguage')} {lang.name}</p>
                     <p className="separator"></p>
                     <p onClick={handleAvatarChange}>{i18n('setUserAvatar')}</p>
                     <p className="unsafe" onClick={handleLogout}>{i18n('logOut')}</p>
                 </div>
+                {i18nLangMenuVisible && <div className="menu-overlay" onClick={() => setI18nLangMenuVisible(false)}></div>}
+                {i18nLangMenuVisible && <div className="i18n-lang-selection-menu">
+                    <p onClick={() => handleSetLang('en')}>English</p>
+                    <p onClick={() => handleSetLang('de')}>Deutsch</p>
+                    <p onClick={() => handleSetLang('pl')}>polski</p>
+                </div>}
             </div>
         );
     }

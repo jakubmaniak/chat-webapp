@@ -97,7 +97,7 @@
 
 .user-box-status-change-menu {
     position: absolute;
-    right: 0;
+    left: 0;
     bottom: 0;
     padding: 16px 0;
     border-radius: 10px;
@@ -110,6 +110,7 @@
         align-items: center;
         color: #cccccc;
         font-size: 13px;
+        font-weight: 500;
         height: 30px;
         cursor: pointer;
 
@@ -144,7 +145,8 @@
     }
 }
 
-.user-box-settings-menu {
+.user-box-settings-menu,
+.i18n-lang-selection-menu {
     position: absolute;
     right: 0;
     bottom: 0;
