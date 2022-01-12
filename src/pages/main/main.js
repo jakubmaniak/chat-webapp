@@ -51,6 +51,7 @@ function MainPage() {
                 else {
                     setLang(res.data.lang);
                     setSession({ ...session, ...res.data, authorized: true });
+                    dayjs.locale(res.data.lang);
                 }
             });
 
