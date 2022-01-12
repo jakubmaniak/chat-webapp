@@ -61,6 +61,8 @@ function UserBox() {
     function handleSetLang(langCode) {
         setLang(langCode);
         setI18nLangMenuVisible(false);
+
+        api.setUserLang({ lang: langCode });
     }
 
     function handleAvatarChange() {

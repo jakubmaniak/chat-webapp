@@ -33,7 +33,7 @@ dayjs.extend(localizedFormat);
 function MainPage() {
     const history = useHistory();
     const { focusedSection } = useNav();
-    const { i18n } = useI18n();
+    const { i18n, setLang } = useI18n();
     const { socket } = useContext(SocketContext);
     const { session, setSession } = useContext(SessionContext);
     const [cookies] = useCookies(['sid']);
@@ -47,7 +47,8 @@ function MainPage() {
                     history.replace('/login');
                 }
                 else {
-                    setSession({ ...session, ...res.data });
+                    setLang(res.data.lang);
+                    setSession({ ...session, ...res.data, authorized: true });
                 }
             });
 

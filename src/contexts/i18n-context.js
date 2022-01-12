@@ -120,7 +120,7 @@ const langs = {
 
 export const initialI18nContext = {
     langs,
-    currentLang: langs.pl
+    currentLang: langs.en
 };
 
 export const I18nContext = createContext(initialI18nContext);

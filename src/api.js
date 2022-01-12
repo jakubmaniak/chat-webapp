@@ -36,6 +36,7 @@ const api = {
     userSignup: ({ username, password }) => sendPost('user/signup', { username, password }),
     userLogout: () => sendPost('user/logout'),
     getUserState: () => sendGet('user/state'),
+    setUserLang: ({ lang }) => sendPut('user/lang', { lang }),
     getContacts: () => sendGet('contacts'),
     deleteContact: ({ username }) => sendDelete('contact/' + username),
     searchUsers: ({ query }) => sendPost('users', { query }),
