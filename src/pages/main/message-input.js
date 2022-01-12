@@ -19,7 +19,6 @@ function MessageInput() {
     const [selectedSourceLang, setSelectedSourceLang] = useState('pl');
     const [selectedTargetLang, setSelectedTargetLang] = useState('en');
 
-    const [lang, setLang] = useState(null);
     const [text, setText] = useState('');
     const [canSend, setCanSend] = useState(false);
 
@@ -42,16 +41,10 @@ function MessageInput() {
 
         if (msgContent.startsWith('/')) {
             if (langCodes.includes(msgContent.substring(1, 3).toLowerCase())) {
-                //msgContent = msgContent.slice(3).trim();
-
                 if (msgContent.substring(4).trim().length) {
-                    //msgContent = text.slice(3).trim();
-                    //msgLang = text.slice(1, 3).toLowerCase();
                     inlineTranslating = true;
                 }
                 else {
-                    //setLang(msgContent.slice(1, 3).toLowerCase());
-                    //setText('');
                     setCanSend(false);
                     return;
                 }

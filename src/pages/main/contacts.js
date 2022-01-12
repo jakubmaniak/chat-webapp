@@ -54,21 +54,16 @@ function Contacts() {
                 history.push('/messages');
                 navigateTo('left');
 
-                //console.log('a', contacts);
                 return;
             }
             else if (contacts.users.length === 0) {
-                //console.log('b', contacts);
                 contact = contacts.rooms[0];
             }
             else if (contacts.rooms.length === 0) {
-                //console.log('c', contacts);
                 contact = contacts.users[0];
             }
             else {
                 contact = contacts.users[0];
-                //contact = contacts.users[0];
-                //console.log('d');
             }
         }
         // else if (contact?.not) {
@@ -108,8 +103,6 @@ function Contacts() {
         //     }
         // }
 
-        console.log('changed to', contact);
-
         contact.unreadCount = 0; // WARNING: changing directly the value of property
         setContacts({ ...contacts, currentContact: contact });
 
@@ -131,12 +124,6 @@ function Contacts() {
                     setIsLoading(false);
                     return toast.error('Nie udało się załadować kontaktów');
                 }
-                // if (res.data.users.length === 0 && res.data.rooms.length === 0) {
-                //     setContacts({ ...contacts, noContacts: true });
-                // }
-                // else {
-                //     setContacts({ ...contacts, noContacts: false });
-                // }
 
                 const newUsers = res.data.users.map((user) => ({
                     isRoom: false,
