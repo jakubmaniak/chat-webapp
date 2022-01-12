@@ -6,6 +6,7 @@ export const initialConversationContext = {
     roomID: null,
     name: null,
     owner: null,
+    isEveryoneCanInvite: null,
     users: new Map()
 };
 

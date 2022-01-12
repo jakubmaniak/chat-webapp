@@ -47,6 +47,7 @@ function MessageFeed() {
                         roomID: res.data.id,
                         name: res.data.name,
                         owner: res.data.owner,
+                        isEveryoneCanInvite: res.data.isEveryoneCanInvite,
                         users: new Map(res.data.users.map((user) => [user.username, user]))
                     });
                 });
@@ -125,7 +126,7 @@ function MessageFeed() {
         let avatarNode;
 
         if (contacts.currentContact?.isRoom) {
-            avatarNode = <UserAvatar avatarID={conversation.users.get(authorName)?.avatar} />;
+            avatarNode = <UserAvatar avatarID={conversation.users.get(authorName)?.avatar} name={authorName} />;
         }
         else {
             avatarNode = <div className="message-author-avatar">{authorName.slice(0, 2)}</div>;

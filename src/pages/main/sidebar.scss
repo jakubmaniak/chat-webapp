@@ -119,6 +119,14 @@ span.sidebar-room-member-username {
     font-weight: 600;
 }
 
+span.sidebar-room-member-ownership {
+    margin-right: 16px;
+    color: #606060;
+    font-size: 14px;
+    font-weight: 500;
+    user-select: none;
+}
+
 .sidebar-room-member-status {
     margin-right: 4px;
     height: 8px;

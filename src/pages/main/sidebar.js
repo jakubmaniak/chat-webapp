@@ -45,7 +45,6 @@ function Sidebar() {
     const [settingsMenuVisible, setSettingsMenuVisible] = useState(false);
     const [addRoomMemberModalVisible, setAddRoomMemberModalVisible] = useState(false);
     const [changeRoomNameModalVisible, setChangeRoomNameModalVisible] = useState(false);
-    const [changeRoomImageModalVisible, setChangeRoomImageModalVisible] = useState(false);
     const [leaveRoomModalVisible, setLeaveRoomModalVisible] = useState(false);
     const [deleteRoomModalVisible, setDeleteRoomModalVisible] = useState(false);
 
@@ -142,26 +141,7 @@ function Sidebar() {
     }
 
     function handleDeleteRoom() {
-        const currentRoom = contacts.currentContact;
-        //const currentRoomIndex = contacts.rooms.findIndex((room) => room.id === currentRoom.id);
-        //api.deleteRoom(contacts.currentContact.id)
-
-        // const newRoomIndex = currentRoomIndex - 1;
-
-        // if (contacts.rooms.length === 1) {
-
-        // }
-        // else if (newRoomIndex < 0) {
-        //     newRoomIndex = 0;
-        // }
-
         api.deleteRoom({ roomID: contacts.currentContact.id });
-
-        // setContacts({
-        //     ...contacts,
-        //     rooms: contacts.rooms.filter((room) => room.id !== currentRoom.id),
-        //     currentContact: null
-        // });
     }
 
     function handleRoomNameChange(roomName) {
@@ -199,6 +179,19 @@ function Sidebar() {
         setSettingsMenuVisible(false);
     }
 
+    function handleToggleIsEveryoneCanInvite(value) {
+        api.updateRoom({
+            roomID: contacts.currentContact.id,
+            property: 'isEveryoneCanInvite',
+            value
+        })
+            .then((res) => {
+                if (!res.error) {
+                    setConversation({ ...conversation, isEveryoneCanInvite: value });
+                }
+            });
+    }
+
 
     function renderMembers() {
         return [...conversation.users.values()].map((user) => {
@@ -206,6 +199,7 @@ function Sidebar() {
                 <div key={user.username} className={'sidebar-room-member ' + userStatuses.get(user.username)}>
                     <UserAvatar avatarID={user.avatar} name={user.username} />
                     <span className="sidebar-room-member-username">{user.username}</span>
+                    {user.username === conversation.owner && <span className="sidebar-room-member-ownership">właściciel</span>}
                     <div className="sidebar-room-member-status"></div>
                 </div>
             );
@@ -279,7 +273,11 @@ function Sidebar() {
                     <div className="menu-overlay" onClick={() => setSettingsMenuVisible(false)}></div>
                     <div className="sidebar-settings-menu" onClick={() => setSettingsMenuVisible(false)}>
                         {isRoomOwner && <p onClick={() => setChangeRoomNameModalVisible(true)}>Zmień nazwę grupy</p>}
-                        {isRoomOwner && <p>Wszyscy mogą zapraszać: wył</p>}
+                        {isRoomOwner && (
+                            conversation.isEveryoneCanInvite
+                                ? <p onClick={() => handleToggleIsEveryoneCanInvite(false)}>Wszyscy mogą zapraszać: wł</p>
+                                : <p onClick={() => handleToggleIsEveryoneCanInvite(true)}>Wszyscy mogą zapraszać: wył</p>
+                        )}
                         {isRoomOwner && <p className="separator"></p>}
                         <p
                             className="unsafe"
@@ -336,11 +334,15 @@ function Sidebar() {
                     <div className="sidebar-section">
                         <div className="sidebar-section-header">
                             <div className="sidebar-section-title">{i18n('members')}</div>
-                            <button
-                                className="sidebar-add-button"
-                                data-tip="Dodaj członka grupy"
-                                onClick={() => setAddRoomMemberModalVisible(true)}
-                            ></button>
+                            {(conversation.owner === session.username || conversation.isEveryoneCanInvite) &&
+                                (
+                                    <button
+                                        className="sidebar-add-button"
+                                        data-tip="Dodaj członka grupy"
+                                        onClick={() => setAddRoomMemberModalVisible(true)}
+                                    ></button>
+                                )
+                            }
                         </div>
                         <div className="sidebar-section-content">
                             {renderMembers()}
