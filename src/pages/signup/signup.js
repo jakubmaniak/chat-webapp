@@ -44,6 +44,12 @@ function SignupPage() {
                 else if (res.code === 'USER_ALREADY_EXISTS') {
                     toast.error('Użytkownik o tej nazwie już istnieje');
                 }
+                else if (res.code === 'USERNAME_TOO_SHORT') {
+                    toast.error('Nazwa użytkownika powinna składać się z przynajmniej 3 znaków');
+                }
+                else if (res.code === 'FORBIDDEN_CHARACTERS') {
+                    toast.error('Nazwa użytkownika może składać się z liter alfabetu łacińskiego, cyfr, kropek i spacji');
+                }
                 else if (res.code === 'PASSWORD_TOO_SHORT') {
                     toast.error('Podane hasło jest za krótkie');
                 }
