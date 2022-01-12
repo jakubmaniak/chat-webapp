@@ -16,7 +16,7 @@ function MessageInput() {
     const [langsMenuVisible, setLangsMenuVisible] = useState(false);
     const [langSelectionType, setLangSelectionType] = useState(null);
 
-    const [selectedSourceLang, setSelectedSourceLang] = useState('pl');
+    const [selectedSourceLang, setSelectedSourceLang] = useState('auto');
     const [selectedTargetLang, setSelectedTargetLang] = useState('en');
 
     const [text, setText] = useState('');
@@ -52,8 +52,6 @@ function MessageInput() {
         }
 
         const options = {};
-
-        console.log({ translatingEnabled, inlineTranslating });
 
         if (translatingEnabled && !inlineTranslating) {
             options.sourceLang = selectedSourceLang;
@@ -134,33 +132,33 @@ function MessageInput() {
                     <div className="menu-overlay" onClick={() => setTranslateMenuVisible(false)}></div>
                 )}
                 <div className="translate-menu">
-                    <p onClick={() => setTranslatingEnabled(!translatingEnabled)}>{
-                        translatingEnabled ? 'Tłumaczenie wiadomości: wł' : 'Tłumaczenie wiadomości: wył'
-                    }</p>
+                    <p onClick={() => setTranslatingEnabled(!translatingEnabled)}>
+                        {i18n('messageTranslation')}: {i18n('turn' + (translatingEnabled ? 'On' : 'Off'))}
+                    </p>
                     <p className="separator"></p>
                     <p
                         className={translatingEnabled ? '' : 'disabled'}
                         onClick={() => translatingEnabled && handleSelectSourceLang()}
-                    >Język źródłowy: {selectedSourceLang}</p>
+                    >{i18n('sourceLang')}: {i18n(selectedSourceLang === 'auto' ? 'detectLang' : selectedSourceLang)}</p>
                     <p
                         className={translatingEnabled ? '' : 'disabled'}
                         onClick={() => translatingEnabled && handleSelectTargetLang()}
-                    >Język docelowy: {selectedTargetLang}</p>
+                    >{i18n('targetLang')}: {i18n(selectedTargetLang)}</p>
                 </div>
                 {langsMenuVisible && <>
                     <div className="menu-overlay" onClick={() => setLangsMenuVisible(false)}></div>
                     <div className="langs-menu" onClick={() => setLangsMenuVisible(false)}>
-                        {langSelectionType === 'source' && <p onClick={() => handleLangSelect('auto')}>rozpoznaj język</p>}
-                        <p onClick={() => handleLangSelect('en')}>angielski</p>
+                        {langSelectionType === 'source' && <p onClick={() => handleLangSelect('auto')}>{i18n('detectLang')}</p>}
+                        <p onClick={() => handleLangSelect('en')}>{i18n('en')}</p>
                         <p className="separator"></p>
-                        <p onClick={() => handleLangSelect('cs')}>czeski</p>
-                        <p onClick={() => handleLangSelect('fr')}>francuski</p>
-                        <p onClick={() => handleLangSelect('es')}>hiszpański</p>
-                        <p onClick={() => handleLangSelect('de')}>niemiecki</p>
-                        <p onClick={() => handleLangSelect('pl')}>polski</p>
-                        <p onClick={() => handleLangSelect('ru')}>rosyjski</p>
-                        <p onClick={() => handleLangSelect('sk')}>słowacki</p>
-                        <p onClick={() => handleLangSelect('it')}>włoski</p>
+                        <p onClick={() => handleLangSelect('cs')}>{i18n('cs')}</p>
+                        <p onClick={() => handleLangSelect('fr')}>{i18n('fr')}</p>
+                        <p onClick={() => handleLangSelect('es')}>{i18n('es')}</p>
+                        <p onClick={() => handleLangSelect('de')}>{i18n('de')}</p>
+                        <p onClick={() => handleLangSelect('pl')}>{i18n('pl')}</p>
+                        <p onClick={() => handleLangSelect('ru')}>{i18n('ru')}</p>
+                        <p onClick={() => handleLangSelect('sk')}>{i18n('sk')}</p>
+                        <p onClick={() => handleLangSelect('it')}>{i18n('it')}</p>
                     </div>
                 </>}
             </div>
@@ -179,12 +177,12 @@ function MessageInput() {
                 type="button"
                 className={'message-box-translate-button' + (translatingEnabled ? ' active' : '')}
                 onClick={() => setTranslateMenuVisible(true)}
-                data-tip="Tłumaczenie wiadomości"
+                data-tip={i18n('messageTranslation')}
             ></button>
             <button
                 className="message-box-send-button"
                 disabled={!canSend}
-                data-tip="Wyślij"
+                data-tip={i18n('send')}
             ></button>
         </div>
         {renderTranslateMenu()}

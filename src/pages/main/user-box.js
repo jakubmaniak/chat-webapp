@@ -108,7 +108,7 @@ function UserBox() {
                 {i18nLangMenuVisible && <div className="i18n-lang-selection-menu">
                     <p onClick={() => handleSetLang('en')}>English</p>
                     <p onClick={() => handleSetLang('de')}>Deutsch</p>
-                    <p onClick={() => handleSetLang('pl')}>polski</p>
+                    <p onClick={() => handleSetLang('pl')}>Polski</p>
                 </div>}
             </div>
         );
