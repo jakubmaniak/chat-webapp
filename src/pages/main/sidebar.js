@@ -6,7 +6,6 @@ import { ConversationContext } from '../../contexts/conversation-context';
 import { SocketContext } from '../../contexts/socket-context';
 import UserAvatar from '../../common/user-avatar';
 
-import './sidebar.scss';
 import api from '../../api';
 import ImageViewer from './image-viewer';
 import DeleteRoomModal from '../../modals/delete-room-modal';
@@ -19,14 +18,8 @@ import useToast from '../../hooks/use-toast';
 import { useOnListener } from '../../hooks/use-listener';
 import { SessionContext } from '../../contexts/session-context';
 
+import './sidebar.scss';
 
-const statusTexts = {
-    online: 'dostępny',
-    brb: 'zaraz wracam',
-    dnd: 'nie przeszkadzać',
-    invisible: 'niewidoczny',
-    offline: 'niedostępny'
-};
 
 function Sidebar() {
     const { i18n } = useI18n();
@@ -124,7 +117,7 @@ function Sidebar() {
             return i18n('memberCounter')(conversation.users.size);
         }
         else {
-            return statusTexts[contacts.currentContact.status];
+            return i18n(contacts.currentContact.status);
         }
     }
 
@@ -199,7 +192,7 @@ function Sidebar() {
                 <div key={user.username} className={'sidebar-room-member ' + userStatuses.get(user.username)}>
                     <UserAvatar avatarID={user.avatar} name={user.username} />
                     <span className="sidebar-room-member-username">{user.username}</span>
-                    {user.username === conversation.owner && <span className="sidebar-room-member-ownership">właściciel</span>}
+                    {user.username === conversation.owner && <span className="sidebar-room-member-ownership">{i18n('owner')}</span>}
                     <div className="sidebar-room-member-status"></div>
                 </div>
             );
@@ -272,21 +265,21 @@ function Sidebar() {
                 <div className="menu-wrapper">
                     <div className="menu-overlay" onClick={() => setSettingsMenuVisible(false)}></div>
                     <div className="sidebar-settings-menu" onClick={() => setSettingsMenuVisible(false)}>
-                        {isRoomOwner && <p onClick={() => setChangeRoomNameModalVisible(true)}>Zmień nazwę grupy</p>}
+                        {isRoomOwner && <p onClick={() => setChangeRoomNameModalVisible(true)}>{i18n('changeRoomName')}</p>}
                         {isRoomOwner && (
                             conversation.isEveryoneCanInvite
-                                ? <p onClick={() => handleToggleIsEveryoneCanInvite(false)}>Wszyscy mogą zapraszać: wł</p>
-                                : <p onClick={() => handleToggleIsEveryoneCanInvite(true)}>Wszyscy mogą zapraszać: wył</p>
+                                ? <p onClick={() => handleToggleIsEveryoneCanInvite(false)}>{i18n('everyoneCanInvite')}: {i18n('turnOn')}</p>
+                                : <p onClick={() => handleToggleIsEveryoneCanInvite(true)}>{i18n('everyoneCanInvite')}: {i18n('turnOff')}</p>
                         )}
                         {isRoomOwner && <p className="separator"></p>}
                         <p
                             className="unsafe"
                             onClick={() => setLeaveRoomModalVisible(true)}
-                        >Opuść grupę</p>
+                        >{i18n('leaveRoom')}</p>
                         {isRoomOwner && <p
                             className="unsafe"
                             onClick={() => setDeleteRoomModalVisible(true)}
-                        >Usuń grupę</p>}
+                        >{i18n('deleteRoom')}</p>}
                     </div>
                 </div>
             );
@@ -296,8 +289,7 @@ function Sidebar() {
                 <div className="menu-wrapper">
                     <div className="menu-overlay" onClick={() => setSettingsMenuVisible(false)}></div>
                     <div className="sidebar-settings-menu">
-                        <p className="unsafe">Zablokuj użytkownika</p>
-                        <p className="unsafe" onClick={handleDeleteContact}>Usuń kontakt</p>
+                        <p className="unsafe" onClick={handleDeleteContact}>{i18n('deleteContact')}</p>
                     </div>
                 </div>
             );
@@ -324,7 +316,7 @@ function Sidebar() {
                     <p className="conversation-extra-info">{getConversationExtraInfo()}</p>
                 </div>
                 <button className="sidebar-settings-button"
-                    data-tip={(contacts.currentContact?.isRoom ? 'Ustawienia grupy' : 'Ustawienia konwersacji')}
+                    data-tip={(contacts.currentContact?.isRoom ? i18n('roomSettings') : i18n('contactSidebarSettings'))}
                     onClick={() => setSettingsMenuVisible(true)}
                 ></button>
                 {renderSettingsMenu()}
