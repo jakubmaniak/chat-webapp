@@ -6,6 +6,8 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import 'dayjs/locale/pl';
+import 'dayjs/locale/en';
+import 'dayjs/locale/de';
 
 import api from '../../api';
 import useI18n from '../../hooks/use-i18n';
@@ -25,7 +27,7 @@ import InvitationReceiver from './invitation-receiver';
 import { useHistory } from 'react-router-dom';
 
 
-dayjs.locale('pl');
+dayjs.locale('en');
 dayjs.extend(relativeTime);
 dayjs.extend(localizedFormat);
 

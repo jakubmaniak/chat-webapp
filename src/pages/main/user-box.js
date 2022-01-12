@@ -1,5 +1,6 @@
 import { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import dayjs from 'dayjs';
 
 import api from '../../api';
 import useI18n from '../../hooks/use-i18n';
@@ -63,6 +64,7 @@ function UserBox() {
         setI18nLangMenuVisible(false);
 
         api.setUserLang({ lang: langCode });
+        dayjs.locale(langCode);
     }
 
     function handleAvatarChange() {
