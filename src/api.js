@@ -33,7 +33,7 @@ function sendDelete(path) {
 
 const api = {
     userLogin: ({ username, password }) => sendPost('user/login', { username, password }),
-    userSignup: ({ username, password }) => sendPost('user/signup', { username, password }),
+    userSignup: ({ username, password, lang = null }) => sendPost('user/signup', { username, password, lang }),
     userLogout: () => sendPost('user/logout'),
     getUserState: () => sendGet('user/state'),
     setUserLang: ({ lang }) => sendPut('user/lang', { lang }),

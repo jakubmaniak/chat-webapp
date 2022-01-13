@@ -3,9 +3,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     width: 100%;
     height: 100vh;
     background-color: #15151a;
+}
+
+.login-form-wrapper,
+.signup-form-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
 }
 
 .login-form,
@@ -68,5 +76,23 @@
         font-size: 15px;
         text-decoration: none;
         text-align: center;
+    }
+}
+
+.lang-select-container {
+    display: flex;
+    margin: 16px 0;
+
+    button {
+        margin: 0 8px;
+        background-color: transparent;        
+        color: #b0b0b0;
+        font-size: 15px;
+        font-weight: 500;
+        cursor: pointer;
+
+        &.selected {
+            color: #10c000;
+        }
     }
 }

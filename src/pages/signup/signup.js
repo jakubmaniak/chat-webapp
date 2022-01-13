@@ -5,14 +5,17 @@ import { ToastContainer } from 'react-toastify';
 
 import api from '../../api';
 import { SessionContext } from '../../contexts/session-context';
+import useToast from '../../hooks/use-toast';
+import useI18n from '../../hooks/use-i18n';
 
 import 'react-toastify/dist/ReactToastify.css';
 import '../../common/auth.scss';
-import useToast from '../../hooks/use-toast';
 
 
 function SignupPage() {
     const history = useHistory();
+
+    const { i18n, lang, setLang } = useI18n();
     const toast = useToast();
     const { session } = useContext(SessionContext);
 
@@ -35,7 +38,7 @@ function SignupPage() {
             return;
         }
 
-        api.userSignup({ username, password })
+        api.userSignup({ username, password, lang: lang.code })
             .then((res) => {
                 if (!res.error) {
                     localStorage.setItem('username', username);
@@ -62,36 +65,43 @@ function SignupPage() {
     return (
         <div className="page signup-page">
             <ToastContainer limit={4} />
-            <form className="signup-form" onSubmit={submitForm}>
-                <header>
-                    <div className="logo"></div>
-                    <p>Lingee</p>
-                </header>
-                <input
-                    value={username}
-                    onChange={(ev) => setUsername(ev.target.value)}
-                    name="username"
-                    placeholder="Nazwa użytkownika"
-                    autoComplete="off"
-                    spellCheck="false"
-                />
-                <input
-                    value={password}
-                    onChange={(ev) => setPassword(ev.target.value)}
-                    placeholder="Hasło"
-                    name="password"
-                    type="password"
-                />
-                <input
-                    value={repeatPassword}
-                    onChange={(ev) => setRepeatPassword(ev.target.value)}
-                    placeholder="Powtórz hasło"
-                    name="repeat-password"
-                    type="password"
-                />
-                <button>Zarejestruj</button>
-                <Link to="/login">Zaloguj się</Link>
-            </form>
+            <div className="login-form-wrapper">
+                <form className="signup-form" onSubmit={submitForm}>
+                    <header>
+                        <div className="logo"></div>
+                        <p>Lingee</p>
+                    </header>
+                    <input
+                        value={username}
+                        onChange={(ev) => setUsername(ev.target.value)}
+                        name="username"
+                        placeholder={i18n('username')}
+                        autoComplete="off"
+                        spellCheck="false"
+                    />
+                    <input
+                        value={password}
+                        onChange={(ev) => setPassword(ev.target.value)}
+                        placeholder={i18n('password')}
+                        name="password"
+                        type="password"
+                    />
+                    <input
+                        value={repeatPassword}
+                        onChange={(ev) => setRepeatPassword(ev.target.value)}
+                        placeholder={i18n('repeatPassword')}
+                        name="repeat-password"
+                        type="password"
+                    />
+                    <button>{i18n('signUp')}</button>
+                    <Link to="/login">{i18n('goToLogIn')}</Link>
+                </form>
+            </div>
+            <div className="lang-select-container">
+                {lang.code !== 'en' && <button onClick={() => setLang('en')}>English</button>}
+                {lang.code !== 'de' && <button onClick={() => setLang('de')}>Deutsch</button>}
+                {lang.code !== 'pl' && <button onClick={() => setLang('pl')}>Polski</button>}
+            </div>
         </div>
     );
 }
