@@ -1,5 +1,0 @@
-contexts:
-- SettingsContext
-- ContactsContext
-- RoomContext?
-- SessionContext
