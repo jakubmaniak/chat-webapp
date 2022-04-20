@@ -330,7 +330,7 @@ function Sidebar() {
                                 (
                                     <button
                                         className="sidebar-add-button"
-                                        data-tip="Dodaj członka grupy"
+                                        data-tip={i18n('addRoomMember')}
                                         onClick={() => setAddRoomMemberModalVisible(true)}
                                     ></button>
                                 )

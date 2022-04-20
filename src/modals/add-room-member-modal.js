@@ -3,11 +3,13 @@ import api from '../api';
 
 import Modal, { Button, Input, ModalFooter } from '../common/modal';
 import UserAvatar from '../common/user-avatar';
+import useI18n from '../hooks/use-i18n';
 
 import './add-room-member-modal.scss';
 
 
 function AddRoomMemberModal(props) {
+    const { i18n } = useI18n();
     const [userName, setUserName] = useState('');
     const [selectedUser, setSelectedUser] = useState(null);
     const [results, setResults] = useState([]);
@@ -44,7 +46,7 @@ function AddRoomMemberModal(props) {
     }
 
     return (
-        <Modal {...props} title="Dodaj członka grupy" onSubmit={handleSubmit}>
+        <Modal {...props} title={i18n('addRoomMember')} onSubmit={handleSubmit}>
             <Input label="Nazwa użytkownika" value={userName} onChange={(ev) => searchUsers(ev.target.value)} focused />
             <div className="add-room-member-search-results">
                 {results.length === 0 && <p className="add-room-member-search-placeholder">Brak wyników</p>}

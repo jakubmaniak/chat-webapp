@@ -70,7 +70,11 @@ const langs = {
             createRoomButton: 'Stwórz',
             addRoom: 'Dodaj grupę',
             addRoomButton: 'Dodaj',
-            addExistingRoom: 'Dodaj istniejącą grupę'
+            addExistingRoom: 'Dodaj istniejącą grupę',
+            roomJoinRequestPending: 'Wysyłanie prośby',
+            roomJoinRequestSuccess: (roomName) => `Prośba o dołączenie do pokoju ${roomName} wysłana`,
+            roomJoinRequestError: 'Wystąpił błąd podczas wysyłania prośby',
+            addRoomMember: 'Dodaj członka grupy'
         }
     },
     en: {
@@ -138,7 +142,11 @@ const langs = {
             createRoomButton: 'Create',
             addRoom: 'Add a group',
             addRoomButton: 'Add',
-            addExistingRoom: 'Add an existing group'
+            addExistingRoom: 'Add an existing group',
+            roomJoinRequestPending: 'Sending a request',
+            roomJoinRequestSuccess: (roomName) => `The join request has been sent`,
+            roomJoinRequestError: 'Error occured',
+            addRoomMember: 'Add a group member'
         }
     },
     de: {
@@ -206,7 +214,11 @@ const langs = {
             createRoomButton: 'Create',
             addRoom: 'Add a group',
             addRoomButton: 'Add',
-            addExistingRoom: 'Add an existing group'
+            addExistingRoom: 'Add an existing group',
+            roomJoinRequestPending: 'Sending a request',
+            roomJoinRequestSuccess: (roomName) => `The join request has been sent`,
+            roomJoinRequestError: 'Error occured',
+            addRoomMember: 'Add a group member'
         }
     }
 };

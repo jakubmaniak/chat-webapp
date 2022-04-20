@@ -28,7 +28,7 @@ function AddRoomModal(props) {
 
         toast.promise(promise, {
             pending: i18n('roomJoinRequestPending'),
-            success: i18n('roomJoinRequestSuccess'),
+            success: i18n('roomJoinRequestSuccess')(selectedRoom.name),
             error: i18n('roomJoinRequestError')
         });
     }
